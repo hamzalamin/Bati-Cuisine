@@ -1,9 +1,22 @@
 package com.wora;
 
-//TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
-// click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
-public class Main {
-    public static void main(String[] args) {
+import com.wora.presentation.ClientUi;
+import com.wora.presentation.MainMenu;
+import com.wora.repositories.ClientRepository;
+import com.wora.repositories.IClientRepository;
+import com.wora.services.ClientService;
+import com.wora.services.IClientService;
 
+import java.sql.SQLException;
+
+public class Main {
+    public static void main(String[] args) throws SQLException {
+
+        IClientRepository clientRepository = new ClientRepository();
+        IClientService clientService = new ClientService(clientRepository);
+        ClientUi clientUi = new ClientUi(clientService);
+
+        MainMenu mainMenu = new MainMenu(clientUi);
+        mainMenu.showMenu();
     }
 }

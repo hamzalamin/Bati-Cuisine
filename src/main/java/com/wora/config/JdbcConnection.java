@@ -19,7 +19,7 @@ public class JdbcConnection {
     public static JdbcConnection getInstance(){
         try {
             if (INSTANCE == null || !INSTANCE.getConnection().isClosed()){
-                INSTANCE = new JdbcConnection():
+                INSTANCE = new JdbcConnection();
             }
             return INSTANCE;
         } catch (Exception e) {
