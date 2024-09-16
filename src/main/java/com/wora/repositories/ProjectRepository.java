@@ -31,7 +31,7 @@ public class ProjectRepository implements IProjectRepository {
                                 rs.getString("address"),
                                 rs.getString("phone"),
                                 rs.getBoolean("is_professional")
-                        )
+                        ).getId()
                 );
                 projects.add(project);
             }
@@ -43,7 +43,7 @@ public class ProjectRepository implements IProjectRepository {
 
     @Override
     public Optional<Project> findById(UUID id) {
-        final String query = "SELECT * FROM " +tableName+ " INNER JOIN clients ON clients.id = projects.client_id WHERE id = ?::uuid";
+        final String query = "SELECT * FROM " +tableName+ " t INNER JOIN clients c ON c.id = t.client_id WHERE t.id = ?::uuid";
         try (PreparedStatement stmt = connection.prepareStatement(query)){
             stmt.setObject(1, id);
             final ResultSet rs = stmt.executeQuery();
@@ -60,7 +60,7 @@ public class ProjectRepository implements IProjectRepository {
                                 rs.getString("address"),
                                 rs.getString("phone"),
                                 rs.getBoolean("is_professional")
-                        )
+                        ).getId()
                 );
                 return Optional.ofNullable(project);
             }

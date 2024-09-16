@@ -11,9 +11,9 @@ public class Project {
     private Double profitMargin;
     private Double totalCost;
     private ProjectStatus projectStatus;
-    private Client clientId;
+    private UUID clientId;
 
-    public Project(UUID id, String projectName, Double profitMargin, Double totalCost, ProjectStatus projectStatus, Client clientId) {
+    public Project(UUID id, String projectName, Double profitMargin, Double totalCost, ProjectStatus projectStatus, UUID clientId) {
         this.id = id;
         this.projectName = projectName;
         this.profitMargin = profitMargin;
@@ -62,11 +62,11 @@ public class Project {
         this.projectStatus = projectStatus;
     }
 
-    public Client getClientId() {
+    public UUID getClientId() {
         return clientId;
     }
 
-    public void setClientId(Client clientId) {
+    public void setClientId(UUID clientId) {
         this.clientId = clientId;
     }
 }
