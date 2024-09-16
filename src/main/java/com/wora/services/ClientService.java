@@ -33,8 +33,8 @@ public class ClientService implements IClientService{
     }
 
     @Override
-    public Client update(ClientDto dto, UUID id) {
-        return repository.update(dto, id);
+    public void update(ClientDto dto, UUID id) {
+        repository.update(dto, id);
     }
 
     @Override

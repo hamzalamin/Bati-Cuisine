@@ -18,5 +18,6 @@ public class Main {
 
         MainMenu mainMenu = new MainMenu(clientUi);
         mainMenu.showMenu();
+
     }
 }

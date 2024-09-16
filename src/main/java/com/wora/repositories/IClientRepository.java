@@ -11,6 +11,6 @@ public interface IClientRepository {
     List<Client> findAll();
     Optional<Client> findById(UUID id);
     void create(ClientDto dto);
-    Client update(ClientDto dto, UUID id);
+    void update(ClientDto dto, UUID id);
     void delete(UUID id);
 }

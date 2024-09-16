@@ -77,7 +77,7 @@ public class ClientRepository implements IClientRepository {
     }
 
     @Override
-    public Client update(ClientDto dto, UUID id) {
+    public void update(ClientDto dto, UUID id) {
         final String query = "UPDATE " + tableName +
                 " SET name = ?, address = ?, phone = ?, is_professional = ? WHERE id = ?::uuid";
         try (PreparedStatement stmt = connection.prepareStatement(query)) {
@@ -91,13 +91,6 @@ public class ClientRepository implements IClientRepository {
             } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-        return new Client(
-                id,
-                dto.name(),
-                dto.address(),
-                dto.phone(),
-                dto.isProfessional()
-        );
     }
 
     @Override
@@ -111,5 +104,4 @@ public class ClientRepository implements IClientRepository {
             throw new RuntimeException(e);
         }
     }
-
 }
