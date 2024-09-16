@@ -1,5 +1,6 @@
 package com.wora.models.entities;
 
+import java.util.List;
 import java.util.UUID;
 
 public class Client {
@@ -16,6 +17,7 @@ public class Client {
         this.phone = phone;
         this.isProfessional = isProfessional;
     }
+
 
     public UUID getId() {
         return id;
