@@ -1,4 +1,7 @@
-package com.wora.presentation;
+package com.wora.presentation.menus;
+
+import com.wora.presentation.MainMenu;
+import com.wora.presentation.ProjectUi;
 
 import java.sql.SQLException;
 import java.util.Scanner;
@@ -24,7 +27,6 @@ public class ProjectMenu {
             System.out.println("3-DELETE PROJECT");
             System.out.println("4-FIND ALL PROJECTS");
             System.out.println("5-FIND PROJECT BY ID");
-
             System.out.println("0- GO BACK TO THE MAIN MENU");
             System.out.print("Enter your choice:");
             choice = scanner.nextInt();

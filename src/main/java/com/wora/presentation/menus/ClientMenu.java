@@ -1,4 +1,7 @@
-package com.wora.presentation;
+package com.wora.presentation.menus;
+
+import com.wora.presentation.ClientUi;
+import com.wora.presentation.MainMenu;
 
 import java.sql.SQLException;
 import java.util.Scanner;
@@ -7,6 +10,7 @@ public class ClientMenu {
     private final Scanner scanner = new Scanner(System.in);
     private final ClientUi clientUi;
     private MainMenu mainMenu;
+
     public ClientMenu(ClientUi clientUi) {
         this.clientUi = clientUi;
     }

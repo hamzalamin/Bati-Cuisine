@@ -72,7 +72,7 @@ public class ProjectUi {
         System.out.println("Total Cost:");
         double totalCost = Double.parseDouble(scanner.nextLine().trim());
 
-        System.out.println("Project Status (e.g., 'Active', 'Inactive'):");
+        System.out.println("Project Status ():");
         ProjectStatus projectStatus = ProjectStatus.valueOf(scanner.nextLine().toUpperCase());
 //        while (projectStatus == null) {
 //            System.out.println("Project status is required:");
@@ -142,9 +142,8 @@ public class ProjectUi {
 
             System.out.println("Enter the project status or press Enter to keep it the same: ");
             ProjectStatus projectStatus = ProjectStatus.valueOf(scanner.nextLine().toUpperCase());
-//            if (status == null) {
-//                ProjectStatus staus = ProjectStatus.valueOf(scanner.nextLine().toUpperCase());
-//            }
+            if (projectStatus != null) projectStatus = existingProject.getProjectStatus();
+
             List<Client> clients =  cService.findAll();
             if (clients.isEmpty()){
                 System.out.println("no clients found");

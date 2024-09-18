@@ -11,7 +11,7 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.UUID;
 
-public class MaterialRepository extends ComponentRepository<Material,MaterialDto> implements IComponentRepository<MaterialDto> {
+public class MaterialRepository extends ComponentRepository<Material,MaterialDto> implements IComponentRepository<Material ,MaterialDto> {
     private final Connection connection = JdbcConnection.getInstance().getConnection();
     public MaterialRepository(final MaterialMapper mapper) {
         super("materials", mapper);

@@ -2,16 +2,15 @@ package com.wora.models.entities;
 
 import com.wora.models.enums.ComponentType;
 
-import java.time.LocalDateTime;
 import java.util.UUID;
 
 public class Worker extends Component {
     private UUID id;
     private Double hourlyRate;
-    private LocalDateTime workHours;
+    private Double workHours;
     private Double workerProductivity;
 
-    public Worker(UUID id, Double tva, ComponentType componentType, UUID projectId, UUID id1, Double hourlyRate, LocalDateTime workHours, Double workerProductivity) {
+    public Worker(UUID id, Double tva, ComponentType componentType, Project projectId, UUID id1, Double hourlyRate, Double workHours, Double workerProductivity) {
         super(id, tva, componentType, projectId);
         this.id = id1;
         this.hourlyRate = hourlyRate;
@@ -37,11 +36,11 @@ public class Worker extends Component {
         this.hourlyRate = hourlyRate;
     }
 
-    public LocalDateTime getWorkHours() {
+    public Double getWorkHours() {
         return workHours;
     }
 
-    public void setWorkHours(LocalDateTime workHours) {
+    public void setWorkHours(Double workHours) {
         this.workHours = workHours;
     }
 
