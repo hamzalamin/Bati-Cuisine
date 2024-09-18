@@ -2,11 +2,7 @@ package com.wora.repositories.impl;
 
 import com.wora.config.JdbcConnection;
 import com.wora.mapper.IComponentMapper;
-import com.wora.models.entities.Client;
 import com.wora.models.entities.Component;
-import com.wora.models.entities.Project;
-import com.wora.models.enums.ComponentType;
-import com.wora.models.enums.ProjectStatus;
 import com.wora.repositories.IComponentRepository;
 
 import java.sql.Connection;
