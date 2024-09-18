@@ -1,10 +1,11 @@
-package com.wora.repositories;
+package com.wora.repositories.impl;
 
 import com.wora.config.JdbcConnection;
 import com.wora.models.dtos.ProjectDto;
 import com.wora.models.entities.Client;
 import com.wora.models.entities.Project;
 import com.wora.models.enums.ProjectStatus;
+import com.wora.repositories.IProjectRepository;
 
 import java.sql.*;
 import java.util.*;
@@ -31,7 +32,7 @@ public class ProjectRepository implements IProjectRepository {
                                 rs.getString("address"),
                                 rs.getString("phone"),
                                 rs.getBoolean("is_professional")
-                        ).getId()
+                        )
                 );
                 projects.add(project);
             }
@@ -60,7 +61,7 @@ public class ProjectRepository implements IProjectRepository {
                                 rs.getString("address"),
                                 rs.getString("phone"),
                                 rs.getBoolean("is_professional")
-                        ).getId()
+                        )
                 );
                 return Optional.ofNullable(project);
             }

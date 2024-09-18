@@ -1,8 +1,9 @@
-package com.wora.repositories;
+package com.wora.repositories.impl;
 
 import com.wora.config.JdbcConnection;
 import com.wora.models.dtos.ClientDto;
 import com.wora.models.entities.Client;
+import com.wora.repositories.IClientRepository;
 
 import java.sql.*;
 import java.util.ArrayList;

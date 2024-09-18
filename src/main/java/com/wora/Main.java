@@ -1,14 +1,14 @@
 package com.wora;
 
 import com.wora.presentation.*;
-import com.wora.repositories.ClientRepository;
+import com.wora.repositories.impl.ClientRepository;
 import com.wora.repositories.IClientRepository;
 import com.wora.repositories.IProjectRepository;
-import com.wora.repositories.ProjectRepository;
-import com.wora.services.ClientService;
+import com.wora.repositories.impl.ProjectRepository;
+import com.wora.services.impl.ClientService;
 import com.wora.services.IClientService;
 import com.wora.services.IProjectService;
-import com.wora.services.ProjectService;
+import com.wora.services.impl.ProjectService;
 
 import java.sql.SQLException;
 

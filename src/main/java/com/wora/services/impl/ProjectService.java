@@ -1,15 +1,16 @@
-package com.wora.services;
+package com.wora.services.impl;
 
 import com.wora.models.dtos.ProjectDto;
 import com.wora.models.entities.Project;
 import com.wora.repositories.IProjectRepository;
+import com.wora.services.IProjectService;
 
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-public class ProjectService implements IProjectService{
+public class ProjectService implements IProjectService {
     private final IProjectRepository repository;
 
     public ProjectService(IProjectRepository repository) {

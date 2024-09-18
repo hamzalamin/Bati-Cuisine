@@ -1,14 +1,15 @@
-package com.wora.services;
+package com.wora.services.impl;
 
 import com.wora.models.dtos.ClientDto;
 import com.wora.models.entities.Client;
 import com.wora.repositories.IClientRepository;
+import com.wora.services.IClientService;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-public class ClientService implements IClientService{
+public class ClientService implements IClientService {
 
     private final IClientRepository repository;
 
