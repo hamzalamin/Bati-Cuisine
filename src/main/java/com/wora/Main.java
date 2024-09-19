@@ -15,10 +15,9 @@ import com.wora.repositories.IComponentRepository;
 import com.wora.repositories.impl.*;
 import com.wora.repositories.IClientRepository;
 import com.wora.repositories.IProjectRepository;
-import com.wora.services.IComponentService;
+import com.wora.services.*;
+import com.wora.services.CalculatorService;
 import com.wora.services.impl.ClientService;
-import com.wora.services.IClientService;
-import com.wora.services.IProjectService;
 import com.wora.services.impl.MaterialService;
 import com.wora.services.impl.ProjectService;
 import com.wora.services.impl.WorkerService;
@@ -32,11 +31,6 @@ public class Main {
         ClientUi clientUi = new ClientUi(clientService);
         ClientMenu clientMenu = new ClientMenu(clientUi);
 
-        IProjectRepository projectRepository = new ProjectRepository();
-        IProjectService projectService = new ProjectService(projectRepository);
-        ProjectUi projectUi = new ProjectUi(projectService, clientService);
-        ProjectMenu projectMenu = new ProjectMenu(projectUi);
-
         WorkerMapper workerMapper = new WorkerMapper();
         IComponentRepository<Worker, WorkerDto> workerRepository = new WorkerRepository(workerMapper);
         IComponentService workerService = new WorkerService(workerRepository);
@@ -48,6 +42,16 @@ public class Main {
         IComponentService materialService = new MaterialService(materialRepository);
         MaterialUi materialUi = new MaterialUi(materialService);
         MenuMaterial materialMenu = new MenuMaterial(materialUi);
+
+        IProjectRepository projectRepository = new ProjectRepository();
+        IProjectService projectService = new ProjectService(projectRepository);
+        ICalculatorService calculatorService = new CalculatorService(materialRepository ,workerRepository);
+        ProjectUi projectUi = new ProjectUi(projectService, clientService, calculatorService);
+        ProjectMenu projectMenu = new ProjectMenu(projectUi);
+
+
+
+
 
         MainMenu mainMenu = new MainMenu(clientMenu, projectMenu, workerMenu, materialMenu);
         clientMenu.setMainMenu(mainMenu);

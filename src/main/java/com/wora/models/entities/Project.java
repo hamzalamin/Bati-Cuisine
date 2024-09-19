@@ -2,6 +2,7 @@ package com.wora.models.entities;
 
 import com.wora.models.enums.ProjectStatus;
 
+import java.util.List;
 import java.util.UUID;
 
 public class Project {
@@ -12,6 +13,10 @@ public class Project {
     private Double totalCost;
     private ProjectStatus projectStatus;
     private Client clientId;
+
+    public Project(){
+
+    }
 
     public Project(UUID id, String projectName, Double profitMargin, Double totalCost, ProjectStatus projectStatus, Client clientId) {
         this.id = id;
@@ -69,4 +74,5 @@ public class Project {
     public void setClientId(Client clientId) {
         this.clientId = clientId;
     }
+
 }

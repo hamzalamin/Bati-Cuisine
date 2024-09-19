@@ -6,8 +6,11 @@ import com.wora.models.entities.Client;
 import com.wora.models.entities.Project;
 import com.wora.models.enums.ComponentType;
 import com.wora.models.enums.ProjectStatus;
+import com.wora.services.CalculatorService;
+import com.wora.services.ICalculatorService;
 import com.wora.services.IClientService;
 import com.wora.services.IProjectService;
+import com.wora.services.impl.ClientService;
 
 import java.sql.SQLException;
 import java.util.*;
@@ -16,11 +19,13 @@ import static com.wora.helpers.Scanners.*;
 
 public class ProjectUi {
     private final IProjectService service;
-    private final IClientService cService;
+    private final IClientService clientService;
+    private final ICalculatorService calculatingService;
 
-    public ProjectUi(IProjectService service, IClientService cService) {
+    public ProjectUi(IProjectService service, IClientService clientService, ICalculatorService calculatingService) {
         this.service = service;
-        this.cService = cService;
+        this.clientService = clientService;
+        this.calculatingService = calculatingService;
     }
 
     public void findAll() {
@@ -44,16 +49,26 @@ public class ProjectUi {
     public void findById() {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Enter the UUID of Project: ");
-        UUID projectId = UUID.fromString(scanner.next());
+        UUID projectId = UUID.fromString(scanner.next().trim());
 
-        Optional<Project> project = service.findById(projectId);
-        if (project.isPresent()) {
-            Project project1 = project.get();
-            System.out.println("ID: " + project1.getId() + " , Name: " + project1.getProjectName() + " , Profit margin: " + project1.getProfitMargin() + " , Total Cost: " + project1.getTotalCost() + " , Project status: " + project1.getProjectStatus() + " , client :" + project1.getClientId());
+        Optional<Project> projectOpt = service.findById(projectId);
+        if (projectOpt.isPresent()) {
+            Project project = projectOpt.get();
+            System.out.println("ID: " + project.getId()
+                    + " , Name: " + project.getProjectName()
+                    + " , Profit Margin: " + project.getProfitMargin()
+                    + " , Total Cost: " + project.getTotalCost()
+                    + " , Project Status: " + project.getProjectStatus()
+                    + " , Client ID: " + project.getClientId());
+
+            Double total = calculatingService.calculateTotalForProject(project);
+            Double totalWithTva = calculatingService.calculateTotalWithTvaForProject(project);
+
+            System.out.println("Total Cost of Components: " + total);
+            System.out.println("Total Cost of Components with TVA: " + totalWithTva);
         } else {
-            System.out.println("Project withe this ID : " + projectId + " Not found!!");
+            System.out.println("Project with ID: " + projectId + " not found!!");
         }
-
     }
 
 
@@ -73,21 +88,10 @@ public class ProjectUi {
             System.out.println("Invalid choice, defaulting to IN_PROGRESS.");
             projectStatus = ProjectStatus.IN_PROGRESS;
         } else {
-            switch (statusChoice) {
-                case 1:
-                    projectStatus = ProjectStatus.IN_PROGRESS;
-                    break;
-                case 2:
-                    projectStatus = ProjectStatus.COMPLETED;
-                    break;
-                case 3:
-                    projectStatus = ProjectStatus.CANCELLED;
-                    break;
-                default:
-                    projectStatus = ProjectStatus.IN_PROGRESS;
-            }
-        }        System.out.println("Available Clients:");
-        List<Client> clients = cService.findAll();
+            projectStatus = ProjectStatus.fromNumber(statusChoice);
+        }
+        System.out.println("Available Clients:");
+        List<Client> clients = clientService.findAll();
         if (clients.isEmpty()) {
             System.out.println("No clients found.");
         } else {
@@ -186,7 +190,7 @@ public class ProjectUi {
             }
         }
 
-        List<Client> clients = cService.findAll();
+        List<Client> clients = clientService.findAll();
         if (clients.isEmpty()) {
             System.out.println("No clients found.");
             return;

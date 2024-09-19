@@ -20,20 +20,33 @@ public class WorkerMapper implements IComponentMapper<Worker> {
                 UUID.fromString(rs.getString("id")),
                 rs.getDouble("tva"),
                 ComponentType.valueOf(rs.getString("component_type")),
-                new Project (
+                new Project(
                         UUID.fromString(rs.getString("id")),
-                                                rs.getString("project_name"),
-                                                rs.getDouble("profit_margin"),
-                                                rs.getDouble("total_cost"),
-                                                ProjectStatus.valueOf(rs.getString("project_status").toUpperCase()),
-                                                new Client(
-                                                        UUID.fromString(rs.getString("id")),
-                                                        rs.getString("name"),
-                                                        rs.getString("address"),
-                                                        rs.getString("phone"),
-                                                        rs.getBoolean("is_professional")
-                                                )
+                        rs.getString("project_name"),
+                        rs.getDouble("profit_margin"),
+                        rs.getDouble("total_cost"),
+                        ProjectStatus.valueOf(rs.getString("project_status").toUpperCase()),
+                        new Client(
+                                UUID.fromString(rs.getString("id")),
+                                rs.getString("name"),
+                                rs.getString("address"),
+                                rs.getString("phone"),
+                                rs.getBoolean("is_professional")
+                        )
                 ),
+                rs.getDouble("hourly_rate"),
+                rs.getDouble("work_Hours"),
+                rs.getDouble("worker_productivity")
+        );
+    }
+
+    @Override
+    public Worker mapProjectLess(ResultSet rs) throws SQLException{
+        return new Worker(
+                UUID.fromString(rs.getString("id")),
+                rs.getDouble("tva"),
+                ComponentType.valueOf(rs.getString("component_type")),
+                null,
                 rs.getDouble("hourly_rate"),
                 rs.getDouble("work_Hours"),
                 rs.getDouble("worker_productivity")

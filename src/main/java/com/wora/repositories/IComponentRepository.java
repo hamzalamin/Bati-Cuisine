@@ -14,4 +14,5 @@ public interface IComponentRepository<Entity, DTO> {
     void create(DTO dto);
     void update(DTO dto, UUID id);
     void delete(UUID id);
+    List<Entity> findAllByProjectId(UUID id);
 }

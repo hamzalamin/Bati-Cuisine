@@ -38,4 +38,18 @@ public class MaterialMapper implements IComponentMapper<Material> {
                 rs.getDouble("quality_coefficient")
         );
     }
+
+    @Override
+    public Material mapProjectLess(ResultSet rs) throws SQLException {
+        return new Material(
+                UUID.fromString(rs.getString("id")),
+                rs.getDouble("tva"),
+                ComponentType.valueOf(rs.getString("component_type")),
+                new Project(),
+                rs.getDouble("unit_cost"),
+                rs.getDouble("quantity"),
+                rs.getDouble("transport_cost"),
+                rs.getDouble("quality_coefficient")
+        );
+    }
 }

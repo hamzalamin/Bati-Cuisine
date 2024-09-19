@@ -5,4 +5,6 @@ import java.sql.SQLException;
 
 public interface IComponentMapper<Entity> {
     Entity map(ResultSet rs) throws SQLException;
+
+    Entity mapProjectLess(ResultSet rs) throws SQLException;
 }
