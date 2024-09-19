@@ -20,12 +20,12 @@ public class MaterialService implements IComponentService<MaterialDto, Material>
     }
 
     @Override
-    public List<Material> findAll() throws SQLException {
+    public List<Material> findAll(){
         return repository.findAll();
     }
 
     @Override
-    public Optional<Material> findById(UUID id) throws SQLException {
+    public Optional<Material> findById(UUID id){
         return repository.findByID(id);
     }
 
@@ -41,7 +41,7 @@ public class MaterialService implements IComponentService<MaterialDto, Material>
 
 
     @Override
-    public void delete(UUID id) throws SQLException {
+    public void delete(UUID id){
         repository.delete(id);
     }
 }

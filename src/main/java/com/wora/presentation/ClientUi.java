@@ -16,7 +16,7 @@ public class ClientUi {
         this.service = service;
     }
 
-    public void findAll() throws SQLException {
+    public void findAll(){
         List<Client> clients = service.findAll();
         if (clients.isEmpty()) {
             System.out.println("no Clients found");
@@ -38,7 +38,6 @@ public class ClientUi {
     }
 
     public void findById() {
-        try {
             UUID clientId = scanUUID("Enter the UUID of Client: ");
 
             Optional<Client> client = service.findById(clientId);
@@ -48,9 +47,7 @@ public class ClientUi {
             } else {
                 System.out.println("Client withe this ID : " + clientId + " Not found!!");
             }
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+
     }
 
     public void create() {
@@ -84,7 +81,6 @@ public class ClientUi {
 
 
     public void update() {
-        try {
             List<Client> clients = service.findAll();
             if (clients.isEmpty()) {
                 System.out.println("no clients found");
@@ -139,14 +135,11 @@ public class ClientUi {
             }
             System.out.println("_________________________________________");
 
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+
     }
 
 
     public void delete() {
-        try {
             List<Client> clients = service.findAll();
             if (clients.isEmpty()) {
                 System.out.println("no clients found");
@@ -164,9 +157,7 @@ public class ClientUi {
             Client existClient = clients.get(index - 1);
             service.delete(existClient.getId());
             System.out.println("client deleted Successfully");
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+
     }
 }
 

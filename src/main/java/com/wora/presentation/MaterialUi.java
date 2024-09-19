@@ -20,7 +20,7 @@ public class MaterialUi {
         this.service = service;
     }
 
-    public void findAll() throws SQLException {
+    public void findAll() {
         List<Material> materials = service.findAll();
         if (materials.isEmpty()) {
             System.out.println("No materials Found.");
@@ -47,11 +47,8 @@ public class MaterialUi {
         UUID materialId = scanUUID("Enter the UUID of the Material: ");
 
         Optional<Material> material = null;
-        try {
-            material = service.findById(materialId);
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+        material = service.findById(materialId);
+
         if (material.isPresent()) {
             Material material1 = material.get();
             System.out.println("ID: " + material1.getId() +
@@ -95,11 +92,7 @@ public class MaterialUi {
 
     public void update() {
         List<Material> materials = null;
-        try {
-            materials = service.findAll();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+        materials = service.findAll();
         if (materials.isEmpty()) {
             System.out.println("No materials found.");
             return;
@@ -149,11 +142,7 @@ public class MaterialUi {
 
     public void delete() {
         List<Material> materials = null;
-        try {
-            materials = service.findAll();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+        materials = service.findAll();
         if (materials.isEmpty()) {
             System.out.println("Ne materials found.");
             return;
@@ -171,11 +160,8 @@ public class MaterialUi {
         }
 
         Material existingMaterial = materials.get(index - 1);
-        try {
-            service.delete(existingMaterial.getId());
-            System.out.println("Material deleted successfully.");
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+
+        service.delete(existingMaterial.getId());
+        System.out.println("Material deleted successfully.");
     }
 }

@@ -21,7 +21,7 @@ public class ProjectMenu {
         this.mainMenu = mainMenu;
     }
 
-    public void projectPresentation() throws SQLException {
+    public void projectPresentation(){
         int choice;
         do {
             System.out.println("************************** GESTION OF PROJECT!!*****************************");

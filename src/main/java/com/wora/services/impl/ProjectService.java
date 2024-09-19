@@ -18,12 +18,12 @@ public class ProjectService implements IProjectService {
     }
 
     @Override
-    public List<Project> findAll() throws SQLException {
+    public List<Project> findAll(){
         return repository.findAll();
     }
 
     @Override
-    public Optional<Project> findById(UUID id) throws SQLException {
+    public Optional<Project> findById(UUID id){
         return repository.findById(id);
     }
 
@@ -38,7 +38,8 @@ public class ProjectService implements IProjectService {
     }
 
     @Override
-    public void delete(UUID id) throws SQLException {
+    public void delete(UUID id){
         repository.delete(id);
     }
+
 }

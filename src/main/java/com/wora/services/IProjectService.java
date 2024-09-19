@@ -9,9 +9,9 @@ import java.util.Optional;
 import java.util.UUID;
 
 public interface IProjectService {
-    List<Project> findAll()  throws SQLException;
-    Optional<Project> findById(UUID id)  throws SQLException;
+    List<Project> findAll();
+    Optional<Project> findById(UUID id);
     void create(ProjectDto dto);
     void update(ProjectDto dto, UUID id);
-    void delete(UUID id) throws SQLException;
+    void delete(UUID id);
 }

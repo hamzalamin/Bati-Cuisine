@@ -19,7 +19,7 @@ public class MenuWorker {
         this.mainMenu = mainMenu;
     }
 
-    public void workerPresentation() throws SQLException {
+    public void workerPresentation()  {
         int choice;
         do {
             System.out.println("************************** MANAGEMENT OF WORKERS **************************");

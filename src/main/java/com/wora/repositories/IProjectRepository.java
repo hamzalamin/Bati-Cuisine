@@ -13,5 +13,5 @@ public interface IProjectRepository {
     Optional<Project> findById(UUID id);
     void create(ProjectDto dto);
     void update(ProjectDto dto, UUID id);
-    void delete(UUID id) throws SQLException;
+    void delete(UUID id);
 }

@@ -10,9 +10,9 @@ import java.util.Optional;
 import java.util.UUID;
 
 public interface IComponentService<DTO , Entity> {
-    List<Entity> findAll()  throws SQLException;
-    Optional<Entity> findById(UUID id)  throws SQLException;
+    List<Entity> findAll();
+    Optional<Entity> findById(UUID id);
     void create(DTO dto);
     void update(DTO dto, UUID id);
-    void delete(UUID id) throws SQLException;
+    void delete(UUID id);
 }

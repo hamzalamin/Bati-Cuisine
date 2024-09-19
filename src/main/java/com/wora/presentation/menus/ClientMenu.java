@@ -19,7 +19,7 @@ public class ClientMenu {
         this.mainMenu = mainMenu;
     }
 
-    public void clientPresentation() throws SQLException {
+    public void clientPresentation() {
         int choice;
         do {
             System.out.println("************************** GESTION OF CLIENT!!*****************************");

@@ -20,7 +20,7 @@ public class MenuMaterial {
     public void setMainMenu(MainMenu mainMenu){
         this.mainMenu = mainMenu;
     }
-    public void materialPresentation() throws SQLException {
+    public void materialPresentation(){
         int choice;
         do {
             System.out.println("************************** MATERIAL OF CLIENT!!*****************************");

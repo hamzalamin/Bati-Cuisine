@@ -19,12 +19,12 @@ public class WorkerService implements IComponentService<WorkerDto, Worker> {
     }
 
     @Override
-    public List<Worker> findAll() throws SQLException {
+    public List<Worker> findAll() {
         return repository.findAll();
     }
 
     @Override
-    public Optional<Worker> findById(UUID id) throws SQLException {
+    public Optional<Worker> findById(UUID id) {
         return repository.findByID(id);
     }
 
@@ -39,7 +39,7 @@ public class WorkerService implements IComponentService<WorkerDto, Worker> {
     }
 
     @Override
-    public void delete(UUID id) throws SQLException {
+    public void delete(UUID id) {
         repository.delete(id);
     }
 }

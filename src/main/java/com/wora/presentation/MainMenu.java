@@ -25,7 +25,7 @@ public class MainMenu {
         this.materialMenu = materialMenu;
     }
 
-    public void showMenu() throws SQLException {
+    public void showMenu(){
         while (true) {
 
             System.out.println("************************** WELCOME BACK !!*****************************");

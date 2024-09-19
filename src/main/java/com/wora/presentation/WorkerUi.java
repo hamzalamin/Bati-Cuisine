@@ -16,7 +16,7 @@ public class WorkerUi {
         this.service = service;
     }
 
-    public void findAll() throws SQLException {
+    public void findAll(){
         List<Worker> workers = service.findAll();
         if (workers.isEmpty()) {
             System.out.println("No workers found.");
@@ -28,7 +28,10 @@ public class WorkerUi {
             System.out.println((i + 1) + " -> ID: " + worker.getId() +
                     " | TVA: " + worker.getTva() +
                     " | Component Type: " + worker.getComponentType() +
-                    " | Project ID: " + worker.getProjectId() +
+                    " | Project Name: " + worker.getProjectId().getProjectName() +
+                    " | Project Status: " + worker.getProjectId().getProjectStatus() +
+                    " | Client Name: " + worker.getProjectId().getClientId().getName() +
+                    " | Client address: " + worker.getProjectId().getClientId().getAddress() +
                     " | Hourly Rate: " + worker.getHourlyRate() +
                     " | Productivity: " + worker.getWorkerProductivity() +
                     " | Work Hours: " + worker.getWorkHours());
@@ -46,7 +49,10 @@ public class WorkerUi {
                 System.out.println("ID: " + worker1.getId() +
                         " | TVA: " + worker1.getTva() +
                         " | Component Type: " + worker1.getComponentType() +
-                        " | Project ID: " + worker1.getProjectId() +
+                        " | Project Name: " + worker1.getProjectId().getProjectName() +
+                        " | Project Status: " + worker1.getProjectId().getProjectStatus() +
+                        " | Client Name: " + worker1.getProjectId().getClientId().getName() +
+                        " | Client address: " + worker1.getProjectId().getClientId().getAddress() +
                         " | Hourly Rate: " + worker1.getHourlyRate() +
                         " | Productivity: " + worker1.getWorkerProductivity() +
                         " | Work Hours: " + worker1.getWorkHours());
