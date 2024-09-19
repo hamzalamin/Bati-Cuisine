@@ -4,7 +4,7 @@ import com.wora.models.enums.ComponentType;
 
 import java.util.UUID;
 
-public class Component {
+public abstract class Component {
     private UUID id;
     private Double tva;
     private ComponentType componentType;
@@ -16,6 +16,7 @@ public class Component {
         this.componentType = componentType;
         this.projectId = projectId;
     }
+
 
     public UUID getId() {
         return id;
@@ -48,4 +49,11 @@ public class Component {
     public void setProjectId(Project projectId) {
         this.projectId = projectId;
     }
+
+    public abstract Double total();
+
+    public Double totalWithTva() {
+        return total() * (1 + tva / 100.0);
+    }
+
 }

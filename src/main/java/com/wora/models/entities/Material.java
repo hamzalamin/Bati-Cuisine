@@ -60,4 +60,8 @@ public class Material extends Component {
     public void setTransportCost(Double transportCost) {
         this.transportCost = transportCost;
     }
+
+    public Double total() {
+        return 1.0;
+    }
 }

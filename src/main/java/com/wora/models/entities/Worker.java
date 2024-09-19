@@ -10,9 +10,8 @@ public class Worker extends Component {
     private Double workHours;
     private Double workerProductivity;
 
-    public Worker(UUID id, Double tva, ComponentType componentType, Project projectId, UUID id1, Double hourlyRate, Double workHours, Double workerProductivity) {
+    public Worker(UUID id, Double tva, ComponentType componentType, Project projectId, Double hourlyRate, Double workHours, Double workerProductivity) {
         super(id, tva, componentType, projectId);
-        this.id = id1;
         this.hourlyRate = hourlyRate;
         this.workHours = workHours;
         this.workerProductivity = workerProductivity;
@@ -50,5 +49,10 @@ public class Worker extends Component {
 
     public void setWorkerProductivity(Double workerProductivity) {
         this.workerProductivity = workerProductivity;
+    }
+
+    @Override
+    public Double total(){
+        return (hourlyRate * workHours * workerProductivity);
     }
 }

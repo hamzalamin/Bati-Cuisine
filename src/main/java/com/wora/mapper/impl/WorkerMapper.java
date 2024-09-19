@@ -34,7 +34,6 @@ public class WorkerMapper implements IComponentMapper<Worker> {
                                                         rs.getBoolean("is_professional")
                                                 )
                 ),
-                UUID.fromString(rs.getString("id")),
                 rs.getDouble("hourly_rate"),
                 rs.getDouble("work_Hours"),
                 rs.getDouble("worker_productivity")

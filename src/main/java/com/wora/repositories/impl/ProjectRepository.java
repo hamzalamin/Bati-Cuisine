@@ -13,13 +13,14 @@ import java.util.*;
 public class ProjectRepository implements IProjectRepository {
     final Connection connection = JdbcConnection.getInstance().getConnection();
     final String tableName = "projects";
+
     @Override
     public List<Project> findAll() {
-        final String query = "SELECT * FROM " + tableName + " INNER JOIN clients ON clients.id = projects.client_id" ;
+        final String query = "SELECT * FROM " + tableName + " INNER JOIN clients ON clients.id = projects.client_id";
         final List<Project> projects = new ArrayList<>();
-        try (Statement stmt = connection.createStatement()){
+        try (Statement stmt = connection.createStatement()) {
             final ResultSet rs = stmt.executeQuery(query);
-            while (rs.next()){
+            while (rs.next()) {
                 Project project = new Project(
                         UUID.fromString(rs.getString("id")),
                         rs.getString("project_name"),
@@ -44,8 +45,8 @@ public class ProjectRepository implements IProjectRepository {
 
     @Override
     public Optional<Project> findById(UUID id) {
-        final String query = "SELECT * FROM " +tableName+ " t INNER JOIN clients c ON c.id = t.client_id WHERE t.id = ?::uuid";
-        try (PreparedStatement stmt = connection.prepareStatement(query)){
+        final String query = "SELECT * FROM " + tableName + " t INNER JOIN clients c ON c.id = t.client_id WHERE t.id = ?::uuid";
+        try (PreparedStatement stmt = connection.prepareStatement(query)) {
             stmt.setObject(1, id);
             final ResultSet rs = stmt.executeQuery();
             if (rs.next()) {
@@ -73,9 +74,9 @@ public class ProjectRepository implements IProjectRepository {
 
     @Override
     public void create(ProjectDto dto) {
-        final String query = "INSERT INTO " +tableName+ "(id, project_name, profit_margin, total_cost, project_status, client_id) " +
+        final String query = "INSERT INTO " + tableName + "(id, project_name, profit_margin, total_cost, project_status, client_id) " +
                 "VALUES (?::uuid, ?, ?, ?, ?::project_status, ?::uuid)";
-        try (PreparedStatement stmt = connection.prepareStatement(query)){
+        try (PreparedStatement stmt = connection.prepareStatement(query)) {
             int c = 1;
             stmt.setObject(c++, UUID.randomUUID());
             stmt.setString(c++, dto.projectName());
@@ -101,9 +102,9 @@ public class ProjectRepository implements IProjectRepository {
                 client_id = ?::uuid
                 WHERE id = ?::uuid
                 """;
-        try (PreparedStatement stmt = connection.prepareStatement(query)){
+        try (PreparedStatement stmt = connection.prepareStatement(query)) {
             int c = 1;
-            stmt.setString(c++ , dto.projectName());
+            stmt.setString(c++, dto.projectName());
             stmt.setDouble(c++, dto.profitMargin());
             stmt.setDouble(c++, dto.totalCost());
             stmt.setObject(c++, dto.projectStatus().toString().toUpperCase());
@@ -116,11 +117,13 @@ public class ProjectRepository implements IProjectRepository {
     }
 
     @Override
-    public void delete(UUID id) throws SQLException {
-        final String query = "DELETE FROM " +tableName+ " WHERE id = ?::uuid";
-        try (PreparedStatement stmt = connection.prepareStatement(query)){
+    public void delete(UUID id) {
+        final String query = "DELETE FROM " + tableName + " WHERE id = ?::uuid";
+        try (PreparedStatement stmt = connection.prepareStatement(query)) {
             stmt.setObject(1, id);
             stmt.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException("Error deleting component", e);
         }
     }
 }
