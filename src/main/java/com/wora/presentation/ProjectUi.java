@@ -1,14 +1,18 @@
 package com.wora.presentation;
 
+import com.wora.helpers.Scanners;
 import com.wora.models.dtos.ProjectDto;
 import com.wora.models.entities.Client;
 import com.wora.models.entities.Project;
+import com.wora.models.enums.ComponentType;
 import com.wora.models.enums.ProjectStatus;
 import com.wora.services.IClientService;
 import com.wora.services.IProjectService;
 
 import java.sql.SQLException;
 import java.util.*;
+
+import static com.wora.helpers.Scanners.*;
 
 public class ProjectUi {
     private final IProjectService service;
@@ -54,43 +58,40 @@ public class ProjectUi {
 
 
     public void create() {
-        Scanner scanner = new Scanner(System.in);
+        String name = scanString("Project Name: ");
+        Double profitMargin = scanDouble("Profit Margin: ");
+        Double totalCost = scanDouble("Total Cost: ");
+        ProjectStatus projectStatus = ProjectStatus.valueOf(Scanners.scanString("Status Of Project: ").toUpperCase().trim());
+        System.out.println("Available Clients:");
+        List<Client> clients = cService.findAll();
+        if (clients.isEmpty()) {
+            System.out.println("No clients found.");
+        } else {
+            for (int c = 0; c < clients.size(); c++) {
+                System.out.println((c + 1) + " -> " + clients.get(c).getName() + " (ID: " + clients.get(c).getId() + ")");
+            }
+            int index = scanInt("Select a client for this project:");
+            UUID clientId = null;
+            if (index < 1 || index > clients.size()) {
+                System.out.println("Invalid choice!!");
+            } else {
+                Client selectedClient = clients.get(index - 1);
+                clientId = selectedClient.getId();
+            }
 
-        System.out.println("Project Name:");
-        String name = scanner.nextLine().trim();
-        while (name.isEmpty()) {
-            System.out.println("Project name is required:");
-            name = scanner.nextLine().trim();
+            ProjectDto dto = new ProjectDto(name, profitMargin, totalCost, projectStatus, clientId);
+            service.create(dto);
+
+            System.out.println("_________________________________________");
+            System.out.println("Project Information");
+            System.out.println("_________________________________________");
+            System.out.println("Project Name: " + name);
+            System.out.println("Profit Margin: " + profitMargin);
+            System.out.println("Total Cost: " + totalCost);
+            System.out.println("Project Status: " + projectStatus);
+            System.out.println("Client ID: " + clientId);
+            System.out.println("_________________________________________");
         }
-
-        System.out.println("Profit Margin:");
-        double profitMargin = Double.parseDouble(scanner.nextLine().trim());
-
-        System.out.println("Total Cost:");
-        double totalCost = Double.parseDouble(scanner.nextLine().trim());
-
-        System.out.println("Project Status ():");
-        ProjectStatus projectStatus = ProjectStatus.valueOf(scanner.nextLine().toUpperCase());
-//        while (projectStatus == null) {
-//            System.out.println("Project status is required:");
-//            ProjectStatus projectStatus = ProjectStatus.valueOf(scanner.nextLine().toUpperCase());
-//        }
-
-        System.out.println("Client ID:");
-        UUID clientId = UUID.fromString(scanner.nextLine().toString());
-
-        ProjectDto dto = new ProjectDto(name, profitMargin, totalCost, projectStatus, clientId);
-        service.create(dto);
-
-        System.out.println("_________________________________________");
-        System.out.println("Project Information");
-        System.out.println("_________________________________________");
-        System.out.println("Project Name: " + name);
-        System.out.println("Profit Margin: " + profitMargin);
-        System.out.println("Total Cost: " + totalCost);
-        System.out.println("Project Status: " + projectStatus);
-        System.out.println("Client ID: " + clientId);
-        System.out.println("_________________________________________");
     }
 
 
@@ -142,19 +143,24 @@ public class ProjectUi {
 
         List<Client> clients = cService.findAll();
         if (clients.isEmpty()) {
-            System.out.println("no clients found");
+            System.out.println("No clients found.");
+            return;
         }
+
         for (int c = 0; c < clients.size(); c++) {
             System.out.println((c + 1) + " -> " + clients.get(c).getName() + " (ID: " + clients.get(c).getId() + ")");
         }
-        System.out.println("Enter the number that you want to update: ");
-        int index2 = scanner.nextInt();
-        if (index2 < 1 || index2 > clients.size()) {
-            System.out.println("invalid choice !!");
-        }
-        Client existClient = clients.get(index2 - 1);
 
-        ProjectDto dto = new ProjectDto(name, profitMargin, totalCost, projectStatus, existClient.getId());
+        int clientIndex = scanInt("Select a client for this project or press Enter to keep the same:");
+        UUID clientId = null;
+
+        if (clientIndex > 0 && clientIndex <= clients.size()) {
+            Client selectedClient = clients.get(clientIndex - 1);
+            clientId = selectedClient.getId();
+        } else {
+            clientId = existingProject.getClientId().getId();
+        }
+        ProjectDto dto = new ProjectDto(name, profitMargin, totalCost, projectStatus, clientId);
         service.update(dto, existingProject.getId());
 
         System.out.println("_________________________________________");
@@ -164,7 +170,7 @@ public class ProjectUi {
         System.out.println("Profit Margin: " + profitMargin);
         System.out.println("Total Cost: " + totalCost);
         System.out.println("Project Status: " + projectStatus);
-        System.out.println("Client ID: " + existingProject.getClientId());
+        System.out.println("Client ID: " + clientId);
         System.out.println("_________________________________________");
 
     }
