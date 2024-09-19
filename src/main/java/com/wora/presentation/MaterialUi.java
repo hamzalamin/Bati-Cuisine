@@ -32,7 +32,9 @@ public class MaterialUi {
             System.out.println((i + 1) + " -> ID: " + material.getId() +
                     " | TVA: " + material.getTva() +
                     " | Component Type: " + material.getComponentType() +
-                    " | Project ID: " + material.getProjectId() +
+                    " | Project Name: " + material.getProjectId().getProjectName() +
+                    " | Client Name: " + material.getProjectId().getClientId().getName() +
+                    " | Client Phone: " + material.getProjectId().getClientId().getPhone() +
                     " | Quantity: " + material.getQuantity() +
                     " | Unit Cost: " + material.getUnitCost() +
                     " | Transport Cost: " + material.getTransportCost() +
@@ -55,7 +57,9 @@ public class MaterialUi {
             System.out.println("ID: " + material1.getId() +
                     " | TVA: " + material1.getTva() +
                     " | Component Type: " + material1.getComponentType() +
-                    " | Project ID: " + material1.getProjectId() +
+                    " | Project Name: " + material1.getProjectId().getProjectName() +
+                    " | Client Name: " + material1.getProjectId().getClientId().getName() +
+                    " | Client Phone: " + material1.getProjectId().getClientId().getPhone() +
                     " | Quantity : " + material1.getQuantity() +
                     " | Unit Cost: " + material1.getUnitCost() +
                     " | Transport Cost: " + material1.getTransportCost() +

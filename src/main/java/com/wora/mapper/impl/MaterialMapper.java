@@ -32,7 +32,6 @@ public class MaterialMapper implements IComponentMapper<Material> {
                                 rs.getBoolean("is_professional")
                         )
                 ),
-                UUID.fromString(rs.getString("id1")),
                 rs.getDouble("unit_cost"),
                 rs.getDouble("quantity"),
                 rs.getDouble("transport_cost"),
