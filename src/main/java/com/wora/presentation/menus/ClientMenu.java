@@ -28,6 +28,7 @@ public class ClientMenu {
             System.out.println("3-DELETE CLIENT");
             System.out.println("4-FIND ALL CLIENTS");
             System.out.println("5-FIND CLIENT BY ID");
+            System.out.println("6-SEARCH FOR CLIENT");
 
             System.out.println("0- GO BACK TO THE MAIN MENU");
             choice = scanInt("Enter your choice:");
@@ -37,6 +38,7 @@ public class ClientMenu {
                 case 3 -> clientUi.delete();
                 case 4 -> clientUi.findAll();
                 case 5 -> clientUi.findById();
+                case 6 -> clientUi.searchByName();
 
                 case 0 -> mainMenu.showMenu();
                 default -> System.out.println("Invalid choice. Please try again.");

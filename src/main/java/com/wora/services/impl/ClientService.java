@@ -42,4 +42,9 @@ public class ClientService implements IClientService {
     public void delete(UUID id) {
         repository.delete(id);
     }
+
+    @Override
+    public Client searchByName(String name) {
+        return repository.searchByName(name);
+    }
 }

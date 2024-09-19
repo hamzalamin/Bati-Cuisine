@@ -159,6 +159,19 @@ public class ClientUi {
             System.out.println("client deleted Successfully");
 
     }
+
+    public Client searchByName() {
+        String name = scanString("Search by Name: ");
+
+        Client client = service.searchByName(name);
+        if (client != null) {
+            System.out.println("id : " + client.getId() + " , Name : " + client.getName() + " , Address : " + client.getAddress() + " , Phone: " + client.getPhone() + " , is professional: " + client.getProfessional());
+        } else {
+            System.out.println("Client withe this ID : " + name + " Not found!!");
+        }
+        return client;
+    }
+
 }
 
 

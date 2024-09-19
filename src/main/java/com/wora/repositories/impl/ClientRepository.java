@@ -105,4 +105,26 @@ public class ClientRepository implements IClientRepository {
             throw new RuntimeException(e);
         }
     }
+
+    @Override
+    public Client searchByName(String name) {
+        final String query = "SELECT * FROM " +tableName+ " WHERE name = ? ";
+        try (PreparedStatement stmt = connection.prepareStatement(query)){
+            stmt.setString(1, name);
+            ResultSet rs = stmt.executeQuery();
+            if(rs.next()){
+                return new Client(
+                    UUID.fromString(rs.getString("id")),
+                    rs.getString("name"),
+                    rs.getString("address"),
+                    rs.getString("phone"),
+                    rs.getBoolean("is_professional")
+                );
+            } else {
+                throw new RuntimeException("Route not found for the given station IDs.");
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }

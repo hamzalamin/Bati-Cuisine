@@ -13,4 +13,5 @@ public interface IClientService {
     void create(ClientDto dto);
     void update(ClientDto dto, UUID id);
     void delete(UUID id);
+    Client searchByName(String name);
 }
