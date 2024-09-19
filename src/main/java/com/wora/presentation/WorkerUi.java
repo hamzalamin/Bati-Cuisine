@@ -4,6 +4,8 @@ import com.wora.models.dtos.WorkerDto;
 import com.wora.models.entities.Worker;
 import com.wora.models.enums.ComponentType;
 import com.wora.services.IComponentService;
+import com.wora.helpers.Scanners;
+
 import java.sql.SQLException;
 import java.util.*;
 
@@ -34,9 +36,9 @@ public class WorkerUi {
     }
 
     public void findById() {
-        try (Scanner scanner = new Scanner(System.in)) {
+        try {
             System.out.print("Enter the UUID of the worker: ");
-            UUID workerId = UUID.fromString(scanner.nextLine());
+            UUID workerId = UUID.fromString(Scanners.scanString(""));
 
             Optional<Worker> worker = service.findById(workerId);
             if (worker.isPresent()) {
@@ -59,26 +61,24 @@ public class WorkerUi {
     }
 
     public void create() {
-        try (Scanner scanner = new Scanner(System.in)) {
+        try {
             System.out.print("Worker TVA: ");
-            double tva = scanner.nextDouble();
-            scanner.nextLine();
+            double tva = Scanners.scanDouble("Worker TVA: ");
 
             System.out.print("Component Type: ");
-            ComponentType componentType = ComponentType.valueOf(scanner.nextLine().toUpperCase().trim());
+            ComponentType componentType = ComponentType.valueOf(Scanners.scanString("").toUpperCase().trim());
 
             System.out.print("Project ID: ");
-            UUID projectId = UUID.fromString(scanner.nextLine());
+            UUID projectId = UUID.fromString(Scanners.scanString(""));
 
             System.out.print("Hourly Rate: ");
-            double hourlyRate = scanner.nextDouble();
+            double hourlyRate = Scanners.scanDouble("Hourly Rate: ");
 
             System.out.print("Productivity: ");
-            double productivity = scanner.nextDouble();
+            double productivity = Scanners.scanDouble("Productivity: ");
 
-            scanner.nextLine();
             System.out.print("Work Hours (HH,mm): ");
-            double workHour = scanner.nextDouble();
+            double workHour = Scanners.scanDouble("Work Hours (HH,mm): ");
 
             WorkerDto dto = new WorkerDto(
                     tva,
@@ -100,6 +100,8 @@ public class WorkerUi {
             System.out.println("Productivity: " + productivity);
             System.out.println("Work Hours: " + workHour);
             System.out.println("_________________________________________");
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
     }
 
@@ -175,7 +177,7 @@ public class WorkerUi {
     }
 
     public void delete() {
-        try (Scanner scanner = new Scanner(System.in)) {
+        try {
             List<Worker> workers = service.findAll();
             if (workers.isEmpty()) {
                 System.out.println("No workers found.");
@@ -188,7 +190,7 @@ public class WorkerUi {
             }
 
             System.out.print("Enter the number of the worker to delete: ");
-            int index = scanner.nextInt();
+            int index = Scanners.scanInt("Enter the number of the worker to delete: ");
             if (index < 1 || index > workers.size()) {
                 System.out.println("Invalid choice.");
                 return;

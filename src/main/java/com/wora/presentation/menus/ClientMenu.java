@@ -4,10 +4,10 @@ import com.wora.presentation.ClientUi;
 import com.wora.presentation.MainMenu;
 
 import java.sql.SQLException;
-import java.util.Scanner;
+
+import static com.wora.helpers.Scanners.scanInt;
 
 public class ClientMenu {
-    private final Scanner scanner = new Scanner(System.in);
     private final ClientUi clientUi;
     private MainMenu mainMenu;
 
@@ -30,8 +30,7 @@ public class ClientMenu {
             System.out.println("5-FIND CLIENT BY ID");
 
             System.out.println("0- GO BACK TO THE MAIN MENU");
-            System.out.print("Enter your choice:");
-            choice = scanner.nextInt();
+            choice = scanInt("Enter your choice:");
             switch (choice) {
                 case 1 -> clientUi.create();
                 case 2 -> clientUi.update();

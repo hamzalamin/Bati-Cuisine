@@ -6,6 +6,8 @@ import com.wora.presentation.ProjectUi;
 import java.sql.SQLException;
 import java.util.Scanner;
 
+import static com.wora.helpers.Scanners.scanInt;
+
 public class ProjectMenu {
     private final Scanner scanner = new Scanner(System.in);
     private final ProjectUi projectUi;
@@ -14,7 +16,8 @@ public class ProjectMenu {
     public ProjectMenu(ProjectUi projectUi) {
         this.projectUi = projectUi;
     }
-    public void setMainMenu(MainMenu mainMenu){
+
+    public void setMainMenu(MainMenu mainMenu) {
         this.mainMenu = mainMenu;
     }
 
@@ -28,8 +31,8 @@ public class ProjectMenu {
             System.out.println("4-FIND ALL PROJECTS");
             System.out.println("5-FIND PROJECT BY ID");
             System.out.println("0- GO BACK TO THE MAIN MENU");
-            System.out.print("Enter your choice:");
-            choice = scanner.nextInt();
+            choice = scanInt("Enter your choice:");
+
             switch (choice) {
                 case 1 -> projectUi.create();
                 case 2 -> projectUi.update();

@@ -19,7 +19,7 @@ public class MaterialRepository extends ComponentRepository<Material,MaterialDto
 
     @Override
     public void create(MaterialDto dto) {
-        final String query = "INSERT INTO " +tableName+ " id, tva, component_type, project_id , unit_cost, quantity, transport_cost, quality_coefficient VALUES(?::uuid, ?, ?::component_type, ?, ?, ?, ?, ?)";
+        final String query = "INSERT INTO " +tableName+ " (id, tva, component_type, project_id , unit_cost, quantity, transport_cost, quality_coefficient) VALUES(?::uuid, ?, ?::component_type, ?, ?, ?, ?, ?)";
         try (PreparedStatement stmt = connection.prepareStatement(query)){
             int c = 1;
             stmt.setObject(c++, UUID.randomUUID());

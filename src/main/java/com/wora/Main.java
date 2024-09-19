@@ -1,23 +1,25 @@
 package com.wora;
 
+import com.wora.mapper.impl.MaterialMapper;
 import com.wora.mapper.impl.WorkerMapper;
+import com.wora.models.dtos.MaterialDto;
 import com.wora.models.dtos.WorkerDto;
+import com.wora.models.entities.Material;
 import com.wora.models.entities.Worker;
 import com.wora.presentation.*;
 import com.wora.presentation.menus.ClientMenu;
+import com.wora.presentation.menus.MenuMaterial;
 import com.wora.presentation.menus.ProjectMenu;
-import com.wora.presentation.menus.WorkerMenu;
+import com.wora.presentation.menus.MenuWorker;
 import com.wora.repositories.IComponentRepository;
-import com.wora.repositories.impl.ClientRepository;
+import com.wora.repositories.impl.*;
 import com.wora.repositories.IClientRepository;
 import com.wora.repositories.IProjectRepository;
-import com.wora.repositories.impl.ComponentRepository;
-import com.wora.repositories.impl.ProjectRepository;
-import com.wora.repositories.impl.WorkerRepository;
 import com.wora.services.IComponentService;
 import com.wora.services.impl.ClientService;
 import com.wora.services.IClientService;
 import com.wora.services.IProjectService;
+import com.wora.services.impl.MaterialService;
 import com.wora.services.impl.ProjectService;
 import com.wora.services.impl.WorkerService;
 
@@ -39,12 +41,20 @@ public class Main {
         IComponentRepository<Worker, WorkerDto> workerRepository = new WorkerRepository(workerMapper);
         IComponentService workerService = new WorkerService(workerRepository);
         WorkerUi workerUi = new WorkerUi(workerService);
-        WorkerMenu workerMenu = new WorkerMenu(workerUi);
+        MenuWorker workerMenu = new MenuWorker(workerUi);
 
-        MainMenu mainMenu = new MainMenu(clientMenu, projectMenu, workerMenu);
+        MaterialMapper materialMapper = new MaterialMapper();
+        IComponentRepository<Material,MaterialDto> materialRepository = new MaterialRepository(materialMapper);
+        IComponentService materialService = new MaterialService(materialRepository);
+        MaterialUi materialUi = new MaterialUi(materialService);
+        MenuMaterial materialMenu = new MenuMaterial(materialUi);
+
+        MainMenu mainMenu = new MainMenu(clientMenu, projectMenu, workerMenu, materialMenu);
         clientMenu.setMainMenu(mainMenu);
         projectMenu.setMainMenu(mainMenu);
         workerMenu.setMainMenu(mainMenu);
+        materialMenu.setMainMenu(mainMenu);
         mainMenu.showMenu();
+
     }
 }
