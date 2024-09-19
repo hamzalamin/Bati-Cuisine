@@ -62,6 +62,6 @@ public class Material extends Component {
     }
 
     public Double total() {
-        return 1.0;
+        return (unitCost * quantity * qualityCoefficient) + transportCost;
     }
 }
