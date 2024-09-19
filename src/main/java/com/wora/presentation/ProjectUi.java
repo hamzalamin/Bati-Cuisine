@@ -61,8 +61,32 @@ public class ProjectUi {
         String name = scanString("Project Name: ");
         Double profitMargin = scanDouble("Profit Margin: ");
         Double totalCost = scanDouble("Total Cost: ");
-        ProjectStatus projectStatus = ProjectStatus.valueOf(Scanners.scanString("Status Of Project: ").toUpperCase().trim());
-        System.out.println("Available Clients:");
+
+        System.out.println("Select the project status:");
+        System.out.println("1 -> IN_PROGRESS");
+        System.out.println("2 -> COMPLETED");
+        System.out.println("3 -> CANCELLED");
+        int statusChoice = scanInt("Enter the number for the status: ");
+        ProjectStatus projectStatus;
+
+        if (statusChoice < 1 || statusChoice > 3) {
+            System.out.println("Invalid choice, defaulting to IN_PROGRESS.");
+            projectStatus = ProjectStatus.IN_PROGRESS;
+        } else {
+            switch (statusChoice) {
+                case 1:
+                    projectStatus = ProjectStatus.IN_PROGRESS;
+                    break;
+                case 2:
+                    projectStatus = ProjectStatus.COMPLETED;
+                    break;
+                case 3:
+                    projectStatus = ProjectStatus.CANCELLED;
+                    break;
+                default:
+                    projectStatus = ProjectStatus.IN_PROGRESS;
+            }
+        }        System.out.println("Available Clients:");
         List<Client> clients = cService.findAll();
         if (clients.isEmpty()) {
             System.out.println("No clients found.");
@@ -137,9 +161,30 @@ public class ProjectUi {
         String totalCostStr = scanner.nextLine().trim();
         double totalCost = totalCostStr.isEmpty() ? existingProject.getTotalCost() : Double.parseDouble(totalCostStr);
 
-        System.out.println("Enter the project status or press Enter to keep it the same: ");
-        ProjectStatus projectStatus = ProjectStatus.valueOf(scanner.nextLine().toUpperCase());
-        if (projectStatus != null) projectStatus = existingProject.getProjectStatus();
+        System.out.println("Select the project status:");
+        System.out.println("1 -> IN_PROGRESS");
+        System.out.println("2 -> COMPLETED");
+        System.out.println("3 -> CANCELLED");
+        int statusChoice = scanInt("Enter the number for the status or press Enter to keep the same: ");
+        ProjectStatus projectStatus;
+        if (statusChoice < 1 || statusChoice > 3) {
+            System.out.println("Invalid choice, keeping the same status.");
+            projectStatus = existingProject.getProjectStatus();
+        } else {
+            switch (statusChoice) {
+                case 1:
+                    projectStatus = ProjectStatus.IN_PROGRESS;
+                    break;
+                case 2:
+                    projectStatus = ProjectStatus.COMPLETED;
+                    break;
+                case 3:
+                    projectStatus = ProjectStatus.CANCELLED;
+                    break;
+                default:
+                    projectStatus = existingProject.getProjectStatus();
+            }
+        }
 
         List<Client> clients = cService.findAll();
         if (clients.isEmpty()) {
