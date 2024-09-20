@@ -35,8 +35,7 @@ public class MainMenu {
             System.out.println("4 - GESTION OF MATERIALS");
             System.out.println("0 - EXIT");
 
-            System.out.print("Enter your choice: ");
-            final int choice = scanInt("Please enter your choice");
+            final int choice = scanInt("Enter your choice: ");
             switch (choice) {
                 case 1 -> clientMenu.clientPresentation();
                 case 2 -> projectMenu.projectPresentation();
@@ -47,8 +46,7 @@ public class MainMenu {
                     System.exit(0);
                 }
                 default -> System.out.println("Invalid choice. Please try again.");
-            }
-            ;
+            };
         }
     }
 }
