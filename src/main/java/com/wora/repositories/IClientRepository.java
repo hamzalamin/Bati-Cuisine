@@ -14,4 +14,5 @@ public interface IClientRepository {
     void update(ClientDto dto, UUID id);
     void delete(UUID id);
     Client searchByName(String name);
+
 }

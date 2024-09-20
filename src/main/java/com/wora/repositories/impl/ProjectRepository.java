@@ -10,10 +10,11 @@ import com.wora.repositories.IProjectRepository;
 import java.sql.*;
 import java.util.*;
 
-public class ProjectRepository implements IProjectRepository {
-    final Connection connection = JdbcConnection.getInstance().getConnection();
-    final String tableName = "projects";
+public class ProjectRepository extends AbstractRepository<Project> implements IProjectRepository {
 
+    public ProjectRepository() {
+        super("projects");
+    }
     @Override
     public List<Project> findAll() {
         final String query = "SELECT * FROM " + tableName + " INNER JOIN clients ON clients.id = projects.client_id";
@@ -116,14 +117,4 @@ public class ProjectRepository implements IProjectRepository {
         }
     }
 
-    @Override
-    public void delete(UUID id) {
-        final String query = "DELETE FROM " + tableName + " WHERE id = ?::uuid";
-        try (PreparedStatement stmt = connection.prepareStatement(query)) {
-            stmt.setObject(1, id);
-            stmt.executeUpdate();
-        } catch (SQLException e) {
-            throw new RuntimeException("Error deleting component", e);
-        }
-    }
 }

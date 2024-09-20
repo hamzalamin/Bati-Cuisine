@@ -39,7 +39,7 @@ public class MaterialRepository extends ComponentRepository<Material,MaterialDto
     @Override
     public void update(MaterialDto dto, UUID id) {
         final String query = """
-                UPDATE materials SET 
+                UPDATE materials SET
                 tva = ?, component_type = ?::component_type , project_id = ?, unit_cost = ?, quantity = ?, transport_cost = ?, quality_coefficient = ?
                 WHERE  id = ?::uuid
                 """;

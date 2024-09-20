@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-public abstract class ComponentRepository<Entity, DTO> implements IComponentRepository<Entity, DTO> {
+public abstract class ComponentRepository<Entity, DTO> implements IComponentRepository<Entity, DTO>  {
     private final Connection connection = JdbcConnection.getInstance().getConnection();
     protected final String tableName;
     protected final IComponentMapper<Entity> mapper;

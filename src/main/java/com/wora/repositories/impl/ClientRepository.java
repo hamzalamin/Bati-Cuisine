@@ -3,6 +3,7 @@ package com.wora.repositories.impl;
 import com.wora.config.JdbcConnection;
 import com.wora.models.dtos.ClientDto;
 import com.wora.models.entities.Client;
+import com.wora.models.entities.Estimate;
 import com.wora.repositories.IClientRepository;
 
 import java.sql.*;
@@ -11,9 +12,11 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-public class ClientRepository implements IClientRepository {
-    private final Connection connection = JdbcConnection.getInstance().getConnection();
-    private final String tableName = "clients";
+public class ClientRepository extends AbstractRepository<Client> implements IClientRepository {
+
+    public ClientRepository() {
+        super("clients");
+    }
 
     @Override
     public List<Client> findAll() {
@@ -95,18 +98,6 @@ public class ClientRepository implements IClientRepository {
     }
 
     @Override
-    public void delete(UUID id) {
-        final String query = "DELETE FROM " + tableName + " WHERE id = ?::uuid";
-
-        try (PreparedStatement stmt = connection.prepareStatement(query)) {
-            stmt.setObject(1, id);
-            stmt.executeUpdate();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    @Override
     public Client searchByName(String name) {
         final String query = "SELECT * FROM " +tableName+ " WHERE name = ? ";
         try (PreparedStatement stmt = connection.prepareStatement(query)){
@@ -127,4 +118,5 @@ public class ClientRepository implements IClientRepository {
             throw new RuntimeException(e);
         }
     }
+
 }
