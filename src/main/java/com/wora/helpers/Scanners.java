@@ -1,5 +1,9 @@
 package com.wora.helpers;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 import java.util.UUID;
@@ -55,5 +59,36 @@ public class Scanners {
         } catch (IllegalArgumentException e) {
             return false;
         }
+    }
+
+    public static LocalDateTime  scanDate(String prompt, String format) {
+        System.out.println(prompt);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(format);
+        String input = scanner.nextLine().trim();
+
+        while (!isValidDate(input, format) || isPastDate(LocalDateTime .parse(input, formatter))) {
+            if (!isValidDate(input, format)) {
+                System.out.println("Invalid date format. Please enter a valid date in the format " + format);
+            } else if (isPastDate(LocalDateTime .parse(input, formatter))) {
+                System.out.println("The date cannot be earlier than today. Please enter a future or today’s date.");
+            }
+            input = scanner.nextLine().trim();
+        }
+
+        return LocalDateTime.parse(input, formatter);
+    }
+
+    private static boolean isValidDate(String input, String format) {
+        try {
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern(format);
+            LocalDateTime.parse(input, formatter);
+            return true;
+        } catch (DateTimeParseException e) {
+            return false;
+        }
+    }
+
+    private static boolean isPastDate(LocalDateTime date) {
+        return date.isBefore(LocalDateTime.now());
     }
 }

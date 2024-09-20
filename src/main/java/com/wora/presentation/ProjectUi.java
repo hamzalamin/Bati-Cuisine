@@ -47,27 +47,23 @@ public class ProjectUi {
     }
 
     public void findById() {
-        Scanner scanner = new Scanner(System.in);
-        System.out.println("Enter the UUID of Project: ");
-        UUID projectId = UUID.fromString(scanner.next().trim());
+        UUID projectId = scanUUID("enter the UUID of Project: ");
+        try {
+            Project project1 = service.findById(projectId);
+            System.out.println("ID: " + project1.getId()
+                    + " , Name: " + project1.getProjectName()
+                    + " , Profit Margin: " + project1.getProfitMargin()
+                    + " , Total Cost: " + project1.getTotalCost()
+                    + " , Project Status: " + project1.getProjectStatus()
+                    + " , Client ID: " + project1.getClientId());
 
-        Optional<Project> projectOpt = service.findById(projectId);
-        if (projectOpt.isPresent()) {
-            Project project = projectOpt.get();
-            System.out.println("ID: " + project.getId()
-                    + " , Name: " + project.getProjectName()
-                    + " , Profit Margin: " + project.getProfitMargin()
-                    + " , Total Cost: " + project.getTotalCost()
-                    + " , Project Status: " + project.getProjectStatus()
-                    + " , Client ID: " + project.getClientId());
-
-            Double total = calculatingService.calculateTotalForProject(project);
-            Double totalWithTva = calculatingService.calculateTotalWithTvaForProject(project);
+            Double total = calculatingService.calculateTotalForProject(project1);
+            Double totalWithTva = calculatingService.calculateTotalWithTvaForProject(project1);
 
             System.out.println("Total Cost of Components: " + total);
             System.out.println("Total Cost of Components with TVA: " + totalWithTva);
-        } else {
-            System.out.println("Project with ID: " + projectId + " not found!!");
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
     }
 

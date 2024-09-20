@@ -38,16 +38,13 @@ public class ClientUi {
     }
 
     public void findById() {
-            UUID clientId = scanUUID("Enter the UUID of Client: ");
-
-            Optional<Client> client = service.findById(clientId);
-            if (client.isPresent()) {
-                Client client1 = client.get();
-                System.out.println("id : " + client1.getName() + " , Name : " + client1.getName() + " , Address : " + client1.getAddress() + " , Phone: " + client1.getPhone() + " , is professional: " + client1.getProfessional());
-            } else {
-                System.out.println("Client withe this ID : " + clientId + " Not found!!");
-            }
-
+        UUID clientId = scanUUID("Enter the UUID of Client: ");
+        try {
+            Client client1 = service.findById(clientId);
+            System.out.println("id : " + client1.getId() + " , Name : " + client1.getName() + " , Address : " + client1.getAddress() + " , Phone: " + client1.getPhone() + " , is professional: " + client1.getProfessional());
+        } catch (RuntimeException e) {
+            System.out.println(e.getMessage());
+        }
     }
 
     public void create() {
