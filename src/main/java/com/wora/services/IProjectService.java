@@ -10,7 +10,7 @@ import java.util.UUID;
 
 public interface IProjectService {
     List<Project> findAll();
-    Optional<Project> findById(UUID id);
+    Project findById(UUID id);
     void create(ProjectDto dto);
     void update(ProjectDto dto, UUID id);
     void delete(UUID id);

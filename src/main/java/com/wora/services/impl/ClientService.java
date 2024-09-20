@@ -23,8 +23,9 @@ public class ClientService implements IClientService {
     }
 
     @Override
-    public Optional<Client> findById(UUID id) {
-        return repository.findById(id);
+    public Client findById(UUID id) {
+        return repository.findById(id)
+                .orElseThrow(() -> new RuntimeException("estimate with id "+ id + " not found"));
     }
 
 

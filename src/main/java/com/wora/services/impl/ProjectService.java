@@ -23,8 +23,9 @@ public class ProjectService implements IProjectService {
     }
 
     @Override
-    public Optional<Project> findById(UUID id){
-        return repository.findById(id);
+    public Project findById(UUID id){
+        return repository.findById(id)
+                .orElseThrow(() -> new RuntimeException("PROJECT with id "+ id + " not found"));
     }
 
     @Override
