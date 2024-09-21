@@ -7,20 +7,15 @@ import com.wora.models.dtos.WorkerDto;
 import com.wora.models.entities.Material;
 import com.wora.models.entities.Worker;
 import com.wora.presentation.*;
-import com.wora.presentation.menus.ClientMenu;
-import com.wora.presentation.menus.MenuMaterial;
-import com.wora.presentation.menus.ProjectMenu;
-import com.wora.presentation.menus.MenuWorker;
+import com.wora.presentation.menus.*;
 import com.wora.repositories.IComponentRepository;
+import com.wora.repositories.IEstimateRepository;
 import com.wora.repositories.impl.*;
 import com.wora.repositories.IClientRepository;
 import com.wora.repositories.IProjectRepository;
 import com.wora.services.*;
 import com.wora.services.CalculatorService;
-import com.wora.services.impl.ClientService;
-import com.wora.services.impl.MaterialService;
-import com.wora.services.impl.ProjectService;
-import com.wora.services.impl.WorkerService;
+import com.wora.services.impl.*;
 
 import java.sql.SQLException;
 
@@ -49,15 +44,18 @@ public class Main {
         ProjectUi projectUi = new ProjectUi(projectService, clientService, calculatorService);
         ProjectMenu projectMenu = new ProjectMenu(projectUi);
 
+        IEstimateRepository estimateRepository = new EstimateRepository();
+        IEstimateService estimateService = new EstimateService(estimateRepository);
+        EstimateUi estimateUi = new EstimateUi(estimateService, calculatorService, projectService);
+        EstimateMenu estimateMenu = new EstimateMenu(estimateUi);
 
 
-
-
-        MainMenu mainMenu = new MainMenu(clientMenu, projectMenu, workerMenu, materialMenu);
+        MainMenu mainMenu = new MainMenu(clientMenu, projectMenu, workerMenu, materialMenu, estimateMenu);
         clientMenu.setMainMenu(mainMenu);
         projectMenu.setMainMenu(mainMenu);
         workerMenu.setMainMenu(mainMenu);
         materialMenu.setMainMenu(mainMenu);
+        estimateMenu.setMainMenu(mainMenu);
         mainMenu.showMenu();
 
     }

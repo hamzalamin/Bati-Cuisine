@@ -1,11 +1,7 @@
 package com.wora.presentation;
 
-import com.wora.presentation.menus.ClientMenu;
-import com.wora.presentation.menus.MenuMaterial;
-import com.wora.presentation.menus.ProjectMenu;
-import com.wora.presentation.menus.MenuWorker;
+import com.wora.presentation.menus.*;
 
-import java.sql.SQLException;
 import java.util.Scanner;
 
 import static com.wora.helpers.Scanners.scanInt;
@@ -17,12 +13,14 @@ public class MainMenu {
     private final ProjectMenu projectMenu;
     private final MenuWorker workerMenu;
     private final MenuMaterial materialMenu;
+    private final EstimateMenu estimateMenu;
 
-    public MainMenu(ClientMenu clientMenu, ProjectMenu projectMenu, MenuWorker workerMenu, MenuMaterial materialMenu) {
+    public MainMenu(ClientMenu clientMenu, ProjectMenu projectMenu, MenuWorker workerMenu, MenuMaterial materialMenu, EstimateMenu estimateMenu) {
         this.clientMenu = clientMenu;
         this.projectMenu = projectMenu;
         this.workerMenu = workerMenu;
         this.materialMenu = materialMenu;
+        this.estimateMenu = estimateMenu;
     }
 
     public void showMenu(){
@@ -33,6 +31,8 @@ public class MainMenu {
             System.out.println("2 - GESTION OF PROJECTS");
             System.out.println("3 - GESTION OF WORKERS");
             System.out.println("4 - GESTION OF MATERIALS");
+            System.out.println("5 - GESTION OF ESTIMATES");
+
             System.out.println("0 - EXIT");
 
             final int choice = scanInt("Enter your choice: ");
@@ -41,6 +41,7 @@ public class MainMenu {
                 case 2 -> projectMenu.projectPresentation();
                 case 3 -> workerMenu.workerPresentation();
                 case 4 -> materialMenu.materialPresentation();
+                case 5 -> estimateMenu.estimatePresentation();
                 case 0 -> {
                     System.out.println("Exiting...");
                     System.exit(0);

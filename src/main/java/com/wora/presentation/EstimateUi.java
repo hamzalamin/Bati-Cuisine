@@ -1,18 +1,14 @@
 package com.wora.presentation;
 
 import com.wora.models.dtos.EstimateDto;
-import com.wora.models.entities.Client;
 import com.wora.models.entities.Estimate;
 import com.wora.models.entities.Project;
 import com.wora.services.ICalculatorService;
-import com.wora.services.IComponentService;
 import com.wora.services.IEstimateService;
 import com.wora.services.IProjectService;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Scanner;
 import java.util.UUID;
 
 import static com.wora.helpers.Scanners.*;
@@ -38,11 +34,10 @@ public class EstimateUi {
             for (int e = 0; e < estimates.size(); e++) {
                 System.out.println((e + 1) + " -> " + " (ID: " + estimates.get(e).getId() +
                         " -- Estimated amount: " + estimates.get(e).getEstimatedAmount() +
-                        " -- Profit margin: " + estimates.get(e).getIssueDate() +
-                        " -- total cost: " + estimates.get(e).getValidityDate() + ")" +
-                        " -- Project Status: " + estimates.get(e).getValidityDate() + ")" +
-                        " -- Client: " + estimates.get(e).getProjectId().getProjectName() + ")" +
-                        " -- Client: " + estimates.get(e).getProjectId().getClientId().getName() + ")"
+                        " -- Issue Date: " + estimates.get(e).getIssueDate() +
+                        " -- Validity Date: " + estimates.get(e).getValidityDate() + ")" +
+                        " -- Project Name: " + estimates.get(e).getProjectId().getProjectName() + ")" +
+                        " -- Client Name: " + estimates.get(e).getProjectId().getClientId().getName() + ")"
 
                 );
             }
@@ -53,15 +48,19 @@ public class EstimateUi {
         UUID estimateId = scanUUID("Enter the Id of estimate: ");
         try {
             Estimate estimate = service.findById(estimateId);
-            System.out.println(
-                    "ID: " + estimate.getId()
-                            + " , Estimated Amount: " + estimate.getEstimatedAmount()
-                            + " , Issue date: " + estimate.getIssueDate()
-                            + " , Validity date: " + estimate.getValidityDate()
-                            + " , is accept : " + estimate.getAccept()
-                            + " , Project Name: " + estimate.getProjectId().getProjectName()
-                            + " , Client name: " + estimate.getProjectId().getClientId().getName()
-            );
+            if (estimate != null) {
+                System.out.println(
+                        "ID: " + estimate.getId()
+                                + " , Estimated Amount: " + estimate.getEstimatedAmount()
+                                + " , Issue date: " + estimate.getIssueDate()
+                                + " , Validity date: " + estimate.getValidityDate()
+                                + " , is accept : " + estimate.getAccept()
+                                + " , Project Name: " + estimate.getProjectId().getProjectName()
+                                + " , Client name: " + estimate.getProjectId().getClientId().getName()
+                );
+            } else {
+                System.out.println("no estimate found with this Id " + estimateId);
+            }
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -77,6 +76,7 @@ public class EstimateUi {
             }
 
             int index = scanInt("Select a project for this estimate: ");
+
             Project projectId = null;
             Double estimatedAmount = null;
 
@@ -89,23 +89,40 @@ public class EstimateUi {
             }
 
             if (estimatedAmount != null) {
-                LocalDateTime issueDate = scanDate("Enter the issue date (yyyy-MM-dd HH:mm):", "yyyy-MM-dd HH:mm");
-                LocalDateTime validityDate = scanDate("Enter the validity date (yyyy-MM-dd HH:mm):", "yyyy-MM-dd HH:mm");
+                LocalDateTime issueDate = scanDate("Enter the issue date (yyyy-MM-dd):", "yyyy-MM-dd");
+                LocalDateTime validityDate = scanDate("Enter the validity date (yyyy-MM-dd):", "yyyy-MM-dd");
+                if (validityDate.isAfter(issueDate)) {
+
+                }
                 Boolean isAccept = scanBoolean("Is this estimate accepted (y/n): ");
-                EstimateDto dto = new EstimateDto(estimatedAmount, issueDate, validityDate, isAccept, projectId);
-                service.create(dto);
+                EstimateDto dto = new EstimateDto(estimatedAmount, issueDate, validityDate, isAccept, projectId.getId());
+                if (isAccept == true) {
+                    service.create(dto);
+                    System.out.println("Estimate created successfully!");
 
-                System.out.println("Estimate created successfully!");
+                    System.out.println("_________________________________________");
+                    System.out.println("Estimate Information");
+                    System.out.println("_________________________________________");
+                    System.out.println("Estimated amount: " + estimatedAmount);
+                    System.out.println("Issue Date: " + issueDate);
+                    System.out.println("Validity Date: " + validityDate);
+                    System.out.println("is accept: " + isAccept);
+                    System.out.println("Project Name: " + projectId.getProjectName());
+                    System.out.println("_________________________________________");
+                } else {
+                    System.out.println("Estimate not created because is not accepted !");
 
-                System.out.println("_________________________________________");
-                System.out.println("Estimate Information");
-                System.out.println("_________________________________________");
-                System.out.println("Estimated amount: " + estimatedAmount);
-                System.out.println("Issue Date: " + issueDate);
-                System.out.println("Validity Date: " + validityDate);
-                System.out.println("is accept: " + isAccept);
-                System.out.println("Project ID: " + projectId);
-                System.out.println("_________________________________________");
+                    System.out.println("_________________________________________");
+                    System.out.println("Estimate Information");
+                    System.out.println("_________________________________________");
+                    System.out.println("Estimated amount: " + estimatedAmount);
+                    System.out.println("Issue Date: " + issueDate);
+                    System.out.println("Validity Date: " + validityDate);
+                    System.out.println("is accept: " + isAccept);
+                    System.out.println("Project Name: " + projectId.getProjectName());
+                    System.out.println("_________________________________________");
+                }
+
             } else {
                 System.out.println("Estimate creation failed due to invalid project selection.");
             }
@@ -142,12 +159,12 @@ public class EstimateUi {
         if (!estimatedAmountStr.isEmpty()) {
             estimatedAmount = Double.parseDouble(estimatedAmountStr);
         }
-        LocalDateTime issueDate = scanDate("Enter the issue date (yyyy-MM-dd HH:mm) or press Enter to keep it the same:", "yyyy-MM-dd HH:mm");
+        LocalDateTime issueDate = scanDate("Enter the issue date (yyyy-MM-dd) or press Enter to keep it the same:", "yyyy-MM-dd");
         if (issueDate == null) {
             issueDate = existingEstimate.getIssueDate();
         }
 
-        LocalDateTime validityDate = scanDate("Enter the validity date (yyyy-MM-dd HH:mm) or press Enter to keep it the same:", "yyyy-MM-dd HH:mm");
+        LocalDateTime validityDate = scanDate("Enter the validity date (yyyy-MM-dd) or press Enter to keep it the same:", "yyyy-MM-dd");
         if (validityDate == null) {
             validityDate = existingEstimate.getValidityDate();
         }
@@ -157,8 +174,27 @@ public class EstimateUi {
             isAccept = existingEstimate.getAccept();
         }
 
+        List<Project> projects = projectService.findAll();
+        Project projectId = null;
+        if (projects.isEmpty()) {
+            System.out.println("No projects found.");
+        } else {
+            for (int c = 0; c < projects.size(); c++) {
+                System.out.println((c + 1) + " -> " + projects.get(c).getProjectName() + " (ID: " + projects.get(c).getId() + ")");
+            }
 
-        EstimateDto dto = new EstimateDto(estimatedAmount, issueDate, validityDate, isAccept, existingEstimate.getProjectId());
+            int index1 = scanInt("Select a project for this estimate: ");
+
+            projectId = null;
+
+            if (index1 < 1 || index1 > projects.size()) {
+                System.out.println("Invalid choice!!");
+            } else {
+                projectId = projects.get(index1 - 1);
+            }
+
+        }
+        EstimateDto dto = new EstimateDto(estimatedAmount, issueDate, validityDate, isAccept, projectId.getId());
         service.update(dto, existingEstimate.getId());
 
         System.out.println("Estimate updated successfully!");
@@ -169,7 +205,7 @@ public class EstimateUi {
         System.out.println("Issue Date: " + issueDate);
         System.out.println("Validity Date: " + validityDate);
         System.out.println("is accept: " + isAccept);
-        System.out.println("Project ID: " +  existingEstimate.getProjectId());
+        System.out.println("Project ID: " + projectId.getId());
         System.out.println("_________________________________________");
     }
 
@@ -201,6 +237,26 @@ public class EstimateUi {
         Estimate existingEstimate = estimates.get(index - 1);
         service.delete(existingEstimate.getId());
         System.out.println("Estimate deleted successfully.");
+    }
+
+    public void findClientEstimate() {
+        UUID estimateId = scanUUID("Enter the Id of estimate: ");
+        List<Estimate> estimates = service.findClientEstimate(estimateId);
+        if (estimates.isEmpty()) {
+            System.out.println("No estimate found");
+            return;
+        } else {
+            for (int e = 0; e < estimates.size(); e++) {
+                System.out.println((e + 1) + " -> " + " (ID: " + estimates.get(e).getId() +
+                        " -- Client Name: " + estimates.get(e).getProjectId().getClientId().getName() +
+                        " -- Project Name: " + estimates.get(e).getProjectId().getProjectName() +
+                        " -- Estimated amount: " + estimates.get(e).getEstimatedAmount() +
+                        " -- Issue Date: " + estimates.get(e).getIssueDate() +
+                        " -- Validity Date: " + estimates.get(e).getValidityDate() + ")" +
+                        " -- Accepted: " + estimates.get(e).getAccept() + ")"
+                );
+            }
+        }
     }
 
 }

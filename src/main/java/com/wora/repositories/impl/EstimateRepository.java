@@ -60,7 +60,7 @@ public class EstimateRepository extends AbstractRepository<Estimate> implements 
 
     @Override
     public Optional<Estimate> findById(UUID id) {
-        final String query = "SELECT * FROM " + tableName + " e INNER JOIN projects p ON p.id = e.project_id INNER JOIN clients c ON c.id = p.client_id WHERE id = ?::uuid";
+        final String query = "SELECT * FROM " + tableName + " e INNER JOIN projects p ON p.id = e.project_id INNER JOIN clients c ON c.id = p.client_id WHERE e.id = ?::uuid";
         try (PreparedStatement stmt = connection.prepareStatement(query)) {
             stmt.setObject(1, id);
             final ResultSet rs = stmt.executeQuery();
@@ -108,19 +108,19 @@ public class EstimateRepository extends AbstractRepository<Estimate> implements 
 
             while (rs.next()) {
                 Estimate estimate = new Estimate(
-                        UUID.fromString(rs.getString("e.id")),
+                        UUID.fromString(rs.getString("id")),
                         rs.getDouble("estimated_amount"),
                         rs.getTimestamp("issue_date").toLocalDateTime(),
                         rs.getTimestamp("validity_date").toLocalDateTime(),
                         rs.getBoolean("is_accepted"),
                         new Project(
-                                UUID.fromString(rs.getString("p.id")),
+                                UUID.fromString(rs.getString("id")),
                                 rs.getString("project_name"),
                                 rs.getDouble("profit_margin"),
                                 rs.getDouble("total_cost"),
                                 ProjectStatus.valueOf(rs.getString("project_status").toUpperCase()),
                                 new Client(
-                                        UUID.fromString(rs.getString("c.id")),
+                                        UUID.fromString(rs.getString("id")),
                                         rs.getString("name"),
                                         rs.getString("address"),
                                         rs.getString("phone"),
@@ -140,7 +140,7 @@ public class EstimateRepository extends AbstractRepository<Estimate> implements 
 
     @Override
     public void create(EstimateDto dto) {
-        final String query = "INSERT INTO " + tableName + " (id, estimated_amount, issue_date, validity_date, is_accept) VALUE (?::uuid, ?, ?, ?, ?)";
+        final String query = "INSERT INTO " + tableName + " (id, estimated_amount, issue_date, validity_date, is_accepted, project_id) VALUES(?::uuid, ?, ?, ?, ?, ?::uuid)";
         try (PreparedStatement stmt = connection.prepareStatement(query)){
             int c = 1;
             stmt.setObject(c++, UUID.randomUUID());
@@ -148,6 +148,7 @@ public class EstimateRepository extends AbstractRepository<Estimate> implements 
             stmt.setTimestamp(c++, Timestamp.valueOf(dto.issueDate()));
             stmt.setTimestamp(c++, Timestamp.valueOf(dto.validityDate()));
             stmt.setBoolean(c++, dto.isAccept());
+            stmt.setObject(c++,  dto.projectId());
             stmt.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -158,7 +159,7 @@ public class EstimateRepository extends AbstractRepository<Estimate> implements 
     public void update(EstimateDto dto, UUID id) {
         final String query = "UPDATE INTO " + tableName +
                 "SET estimated_amount = ?, " +
-                "issue_date = ?, validity_date = ?, is_accept = ?" +
+                "issue_date = ?, validity_date = ?, is_accepted = ? ,project_id = ?::uuid " +
                 "WHERE id = ?::uuid";
         try (PreparedStatement stmt = connection.prepareStatement(query)){
             int c = 1;
@@ -166,6 +167,7 @@ public class EstimateRepository extends AbstractRepository<Estimate> implements 
             stmt.setTimestamp(c++, Timestamp.valueOf(dto.issueDate()));
             stmt.setTimestamp(c++, Timestamp.valueOf(dto.validityDate()));
             stmt.setBoolean(c++, dto.isAccept());
+            stmt.setObject(c++, dto.projectId());
             stmt.setObject(c++, id);
             stmt.executeUpdate();
         } catch (SQLException e) {

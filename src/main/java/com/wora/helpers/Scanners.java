@@ -91,4 +91,5 @@ public class Scanners {
     private static boolean isPastDate(LocalDateTime date) {
         return date.isBefore(LocalDateTime.now());
     }
+
 }
