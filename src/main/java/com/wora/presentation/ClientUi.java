@@ -3,10 +3,7 @@ package com.wora.presentation;
 import com.wora.models.dtos.ClientDto;
 import com.wora.models.entities.Client;
 import com.wora.services.IClientService;
-
-import java.sql.SQLException;
 import java.util.*;
-
 import static com.wora.helpers.Scanners.*;
 
 public class ClientUi {
@@ -91,25 +88,10 @@ public class ClientUi {
             }
 
             Client existClient = clients.get(index - 1);
-            String name = scanString("enter the client name or press to keep it the same: ");
-            if (name.isEmpty()) {
-                name = existClient.getName();
-            }
-
-            String address = scanString("enter the client address or press to keep it the same: ");
-            if (address.isEmpty()) {
-                address = existClient.getName();
-            }
-
-            String phone = scanString("enter the client phone or press to keep it the same: ");
-            if (phone.isEmpty()) {
-                phone = existClient.getName();
-            }
-
-            Boolean isProfessional = scanBoolean("Is this client Professional :");
-            if (isProfessional == null) {
-                isProfessional = existClient.getProfessional();
-            }
+            String name = updateString("enter the client name ", existClient.getName());
+            String address = updateString("enter the client address: ", existClient.getAddress());
+            String phone = updateString("enter the client phone ", existClient.getPhone());
+            Boolean isProfessional = updateBoolean("Is this client Professional :", existClient.getProfessional());
 
             ClientDto dto = new ClientDto(
                     name,
@@ -131,10 +113,7 @@ public class ClientUi {
                 System.out.println(name + " is not a Professional Client");
             }
             System.out.println("_________________________________________");
-
-
     }
-
 
     public void delete() {
             List<Client> clients = service.findAll();

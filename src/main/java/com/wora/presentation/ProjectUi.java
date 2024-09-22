@@ -55,7 +55,7 @@ public class ProjectUi {
                     + " , Profit Margin: " + project1.getProfitMargin()
                     + " , Total Cost: " + project1.getTotalCost()
                     + " , Project Status: " + project1.getProjectStatus()
-                    + " , Client ID: " + project1.getClientId());
+                    + " , Client ID: " + project1.getClientId().getId());
 
             Double total = calculatingService.calculateTotalForProject(project1);
             Double totalWithTva = calculatingService.calculateTotalWithTvaForProject(project1);
@@ -147,20 +147,9 @@ public class ProjectUi {
 
         Project existingProject = projects.get(index - 1);
 
-        System.out.println("Enter the project name or press Enter to keep it the same: ");
-        String name = scanner.nextLine().trim();
-        if (name.isEmpty()) {
-            name = existingProject.getProjectName();
-        }
-
-        System.out.println("Enter the profit margin or press Enter to keep it the same: ");
-        String profitMarginStr = scanner.nextLine().trim();
-        double profitMargin = profitMarginStr.isEmpty() ? existingProject.getProfitMargin() : Double.parseDouble(profitMarginStr);
-
-        System.out.println("Enter the total cost or press Enter to keep it the same: ");
-        String totalCostStr = scanner.nextLine().trim();
-        double totalCost = totalCostStr.isEmpty() ? existingProject.getTotalCost() : Double.parseDouble(totalCostStr);
-
+        String name = updateString("Enter the project ", existingProject.getProjectName());
+        double profitMargin = updateDouble("Enter the profit margin ", existingProject.getProfitMargin());
+        double totalCost = updateDouble("Enter the profit margin ", existingProject.getTotalCost());
         System.out.println("Select the project status:");
         System.out.println("1 -> IN_PROGRESS");
         System.out.println("2 -> COMPLETED");
@@ -185,7 +174,6 @@ public class ProjectUi {
                     projectStatus = existingProject.getProjectStatus();
             }
         }
-
         List<Client> clients = clientService.findAll();
         if (clients.isEmpty()) {
             System.out.println("No clients found.");

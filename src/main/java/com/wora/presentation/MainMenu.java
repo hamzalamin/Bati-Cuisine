@@ -27,12 +27,11 @@ public class MainMenu {
         while (true) {
 
             System.out.println("************************** WELCOME BACK !!*****************************");
-            System.out.println("1 - GESTION OF CLIENTS");
-            System.out.println("2 - GESTION OF PROJECTS");
-            System.out.println("3 - GESTION OF WORKERS");
-            System.out.println("4 - GESTION OF MATERIALS");
-            System.out.println("5 - GESTION OF ESTIMATES");
-
+            System.out.println("1 - Client Management");
+            System.out.println("2 - Project Management");
+            System.out.println("3 - Worker Management");
+            System.out.println("4 - Material Management");
+            System.out.println("5 - Estimate Management");
             System.out.println("0 - EXIT");
 
             final int choice = scanInt("Enter your choice: ");

@@ -44,12 +44,13 @@ public class Main {
         ProjectUi projectUi = new ProjectUi(projectService, clientService, calculatorService);
         ProjectMenu projectMenu = new ProjectMenu(projectUi);
 
+
         IEstimateRepository estimateRepository = new EstimateRepository();
         IEstimateService estimateService = new EstimateService(estimateRepository);
         EstimateUi estimateUi = new EstimateUi(estimateService, calculatorService, projectService);
         EstimateMenu estimateMenu = new EstimateMenu(estimateUi);
 
-
+        workerUi.setProjectService(projectService);
         MainMenu mainMenu = new MainMenu(clientMenu, projectMenu, workerMenu, materialMenu, estimateMenu);
         clientMenu.setMainMenu(mainMenu);
         projectMenu.setMainMenu(mainMenu);

@@ -1,22 +1,31 @@
 package com.wora.presentation;
 
 import com.wora.models.dtos.WorkerDto;
+import com.wora.models.entities.Client;
+import com.wora.models.entities.Project;
 import com.wora.models.entities.Worker;
 import com.wora.models.enums.ComponentType;
 import com.wora.services.IComponentService;
 import com.wora.helpers.Scanners;
+import com.wora.services.IProjectService;
+import com.wora.services.impl.ProjectService;
 
-import java.sql.SQLException;
 import java.util.*;
+
+import static com.wora.helpers.Scanners.*;
 
 public class WorkerUi {
     private final IComponentService service;
+    private IProjectService projectService;
 
     public WorkerUi(IComponentService service) {
         this.service = service;
     }
+    public void setProjectService(IProjectService projectService){
+        this.projectService = projectService;
+    }
 
-    public void findAll(){
+    public void findAll() {
         List<Worker> workers = service.findAll();
         if (workers.isEmpty()) {
             System.out.println("No workers found.");
@@ -40,8 +49,7 @@ public class WorkerUi {
 
     public void findById() {
         try {
-            System.out.print("Enter the UUID of the worker: ");
-            UUID workerId = UUID.fromString(Scanners.scanString(""));
+            UUID workerId = UUID.fromString(scanString("Enter the UUID of the worker: "));
 
             Optional<Worker> worker = service.findById(workerId);
             if (worker.isPresent()) {
@@ -67,24 +75,44 @@ public class WorkerUi {
     }
 
     public void create() {
-        try {
-            System.out.print("Worker TVA: ");
-            double tva = Scanners.scanDouble("Worker TVA: ");
+            double tva = scanDouble("Worker TVA: ");
 
-            System.out.print("Component Type: ");
-            ComponentType componentType = ComponentType.valueOf(Scanners.scanString("").toUpperCase().trim());
+            System.out.println("Select the Component type: ");
+            System.out.println("1 -> WORKER");
+            System.out.println("2 -> MATERIAL");
+            int componentChoice = scanInt("Enter the number for the component type: ");
+            ComponentType componentType;
+            if (componentChoice < 1 || componentChoice > 2) {
+                System.out.println("Invalid choice, defaulting to WORKER.");
+                componentType = ComponentType.WORKER;
+            } else {
+                componentType = ComponentType.fromNumber(componentChoice);
+            }
 
-            System.out.print("Project ID: ");
-            UUID projectId = UUID.fromString(Scanners.scanString(""));
+            System.out.println("Available Projects:");
+            List<Project> projects = projectService.findAll();
+            if (projects.isEmpty()) {
+                System.out.println("No projects found.");
+                return;
+            }
 
-            System.out.print("Hourly Rate: ");
-            double hourlyRate = Scanners.scanDouble("Hourly Rate: ");
+            for (int c = 0; c < projects.size(); c++) {
+                System.out.println((c + 1) + " -> " + projects.get(c).getProjectName() + " (ID: " + projects.get(c).getId() + ")");
+            }
 
-            System.out.print("Productivity: ");
-            double productivity = Scanners.scanDouble("Productivity: ");
+            int index = scanInt("Select a Project for this worker:");
+            UUID projectId = null;
+            if (index < 1 || index > projects.size()) {
+                System.out.println("Invalid choice!!");
+                return;
+            } else {
+                Project selectedProject = projects.get(index - 1);
+                projectId = selectedProject.getId();
+            }
 
-            System.out.print("Work Hours (HH,mm): ");
-            double workHour = Scanners.scanDouble("Work Hours (HH,mm): ");
+            double hourlyRate = scanDouble("Hourly Rate: ");
+            double productivity = scanDouble("Productivity: ");
+            double workHour = scanDouble("Work Hours (format: HH:mm): ");
 
             WorkerDto dto = new WorkerDto(
                     tva,
@@ -106,107 +134,84 @@ public class WorkerUi {
             System.out.println("Productivity: " + productivity);
             System.out.println("Work Hours: " + workHour);
             System.out.println("_________________________________________");
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+
     }
 
-    public void update() {
-        try (Scanner scanner = new Scanner(System.in)) {
-            List<Worker> workers = service.findAll();
-            if (workers.isEmpty()) {
-                System.out.println("No workers found.");
-                return;
+
+    public void update () {
+                List<Worker> workers = service.findAll();
+                if (workers.isEmpty()) {
+                    System.out.println("No workers found.");
+                    return;
+                }
+
+                for (int i = 0; i < workers.size(); i++) {
+                    Worker worker = workers.get(i);
+                    System.out.println((i + 1) + " -> Name: " + worker.getId() + " (ID: " + worker.getId() + ")");
+                }
+
+                int index = scanInt("Enter the number of the worker to update: ");
+                if (index < 1 || index > workers.size()) {
+                    System.out.println("Invalid choice.");
+                    return;
+                }
+
+                Worker existingWorker = workers.get(index - 1);
+
+                double tva = updateDouble("Enter new TVA : ", existingWorker.getTva());
+                ComponentType componentType = updateEnum("Enter new Component Type: ", existingWorker.getComponentType(), ComponentType.class);
+                UUID projectId = updateUUID("Enter new Project ID : ", existingWorker.getProjectId().getId());
+                double hourlyRate = updateDouble("Enter new Hourly Rate : ", existingWorker.getHourlyRate());
+                double productivity = updateDouble("Enter new Productivity : ", existingWorker.getWorkerProductivity());
+                double workHour = updateDouble("Enter new Work Hours  (HH,mm): " , existingWorker.getWorkHours());
+
+                WorkerDto dto = new WorkerDto(
+                        tva,
+                        componentType,
+                        projectId,
+                        hourlyRate,
+                        workHour,
+                        productivity
+                );
+                service.update(dto, existingWorker.getId());
+
+                System.out.println("_________________________________________");
+                System.out.println("Updated Worker Information:");
+                System.out.println("_________________________________________");
+                System.out.println("TVA: " + tva);
+                System.out.println("Component Type: " + componentType);
+                System.out.println("Project ID: " + projectId);
+                System.out.println("Hourly Rate: " + hourlyRate);
+                System.out.println("Productivity: " + productivity);
+                System.out.println("Work Hours: " + workHour);
+                System.out.println("_________________________________________");
+        }
+
+        public void delete () {
+            try {
+                List<Worker> workers = service.findAll();
+                if (workers.isEmpty()) {
+                    System.out.println("No workers found.");
+                    return;
+                }
+
+                for (int i = 0; i < workers.size(); i++) {
+                    Worker worker = workers.get(i);
+                    System.out.println((i + 1) + " -> Name: " + worker.getId() + " (ID: " + worker.getId() + ")");
+                }
+
+                System.out.print("Enter the number of the worker to delete: ");
+                int index = Scanners.scanInt("Enter the number of the worker to delete: ");
+                if (index < 1 || index > workers.size()) {
+                    System.out.println("Invalid choice.");
+                    return;
+                }
+
+                Worker existingWorker = workers.get(index - 1);
+                service.delete(existingWorker.getId());
+                System.out.println("Worker deleted successfully.");
+            } catch (Exception e) {
+                throw new RuntimeException(e);
             }
-
-            for (int i = 0; i < workers.size(); i++) {
-                Worker worker = workers.get(i);
-                System.out.println((i + 1) + " -> Name: " + worker.getId() + " (ID: " + worker.getId() + ")");
-            }
-
-            System.out.print("Enter the number of the worker to update: ");
-            int index = scanner.nextInt();
-            scanner.nextLine();
-            if (index < 1 || index > workers.size()) {
-                System.out.println("Invalid choice.");
-                return;
-            }
-
-            Worker existingWorker = workers.get(index - 1);
-
-            System.out.print("Enter new TVA or press Enter to keep it the same: ");
-            double tva = scanner.hasNextDouble() ? scanner.nextDouble() : existingWorker.getTva();
-            scanner.nextLine();
-
-            System.out.print("Enter new Component Type or press Enter to keep it the same: ");
-            ComponentType componentType = ComponentType.valueOf(scanner.nextLine().toUpperCase().trim());
-            if (componentType != null) componentType = existingWorker.getComponentType();
-
-            System.out.print("Enter new Project ID or press Enter to keep it the same: ");
-            UUID projectId = scanner.hasNextLine() ? UUID.fromString(scanner.nextLine().trim()) : existingWorker.getProjectId().getId();
-
-            System.out.print("Enter new Hourly Rate or press Enter to keep it the same: ");
-            double hourlyRate = scanner.hasNextDouble() ? scanner.nextDouble() : existingWorker.getHourlyRate();
-            scanner.nextLine();
-
-            System.out.print("Enter new Productivity or press Enter to keep it the same: ");
-            double productivity = scanner.hasNextDouble() ? scanner.nextDouble() : existingWorker.getWorkerProductivity();
-            scanner.nextLine();
-
-            System.out.print("Enter new Work Hours or press Enter to keep it the same (HH,mm): ");
-            double workHour = scanner.hasNextDouble() ? scanner.nextDouble() : existingWorker.getWorkHours();
-            scanner.nextLine();
-
-            WorkerDto dto = new WorkerDto(
-                    tva,
-                    componentType,
-                    projectId,
-                    hourlyRate,
-                    workHour,
-                    productivity
-            );
-            service.update(dto, existingWorker.getId());
-
-            System.out.println("_________________________________________");
-            System.out.println("Updated Worker Information:");
-            System.out.println("_________________________________________");
-            System.out.println("TVA: " + tva);
-            System.out.println("Component Type: " + componentType);
-            System.out.println("Project ID: " + projectId);
-            System.out.println("Hourly Rate: " + hourlyRate);
-            System.out.println("Productivity: " + productivity);
-            System.out.println("Work Hours: " + workHour);
-            System.out.println("_________________________________________");
-        } catch (Exception e) {
-            throw new RuntimeException(e);
         }
     }
-
-    public void delete() {
-        try {
-            List<Worker> workers = service.findAll();
-            if (workers.isEmpty()) {
-                System.out.println("No workers found.");
-                return;
-            }
-
-            for (int i = 0; i < workers.size(); i++) {
-                Worker worker = workers.get(i);
-                System.out.println((i + 1) + " -> Name: " + worker.getId() + " (ID: " + worker.getId() + ")");
-            }
-
-            System.out.print("Enter the number of the worker to delete: ");
-            int index = Scanners.scanInt("Enter the number of the worker to delete: ");
-            if (index < 1 || index > workers.size()) {
-                System.out.println("Invalid choice.");
-                return;
-            }
-
-            Worker existingWorker = workers.get(index - 1);
-            service.delete(existingWorker.getId());
-            System.out.println("Worker deleted successfully.");
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-    }
-}

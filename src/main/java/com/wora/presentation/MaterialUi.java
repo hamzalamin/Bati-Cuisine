@@ -111,20 +111,13 @@ public class MaterialUi {
 
         Material existingMaterial = materials.get(index - 1);
 
-        double tva = scanDouble("Enter new TVA or press Enter to keep it the same: ");
-        String componentTypeStr = scanString("Enter new component type or press enter to keep it the same: ");
-        ComponentType componentType = componentTypeStr.isEmpty() ? existingMaterial.getComponentType() : ComponentType.valueOf(componentTypeStr.toUpperCase());
-
-        String projectIdStr = scanString("Enter new project id or press enter to keep it the same: ");
-        UUID projectId = projectIdStr.isEmpty() ? existingMaterial.getProjectId().getId() : UUID.fromString(projectIdStr);
-
-        double quantity = scanDouble("Enter new Quantity or press Enter to keep it the same: ");
-
-        double unitCost = scanDouble("Enter new Unit Cost or press Enter to keep it the same: ");
-
-        double transportCost = scanDouble("Enter new Transport Cost or press Enter to keep it the same: ");
-
-        double qualityCoefficient = scanDouble("Enter new Quality Coefficient or press Enter to keep it the same: ");
+        double tva = updateDouble("Enter new TVA : ", existingMaterial.getTva());
+        UUID projectId = updateUUID("Enter new project id ", existingMaterial.getProjectId().getId());
+        ComponentType componentType = updateEnum("Enter new Component Type: ", existingMaterial.getComponentType(), ComponentType.class);
+        double quantity = updateDouble("Enter new Quantity ", existingMaterial.getQuantity());
+        double unitCost = updateDouble("Enter new Unit Cost ", existingMaterial.getUnitCost());
+        double transportCost = updateDouble("Enter new Transport ", existingMaterial.getTransportCost());
+        double qualityCoefficient = updateDouble("Enter new Quality ", existingMaterial.getQualityCoefficient());
 
         MaterialDto dto = new MaterialDto(
                 tva,

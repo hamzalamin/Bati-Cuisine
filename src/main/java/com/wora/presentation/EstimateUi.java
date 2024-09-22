@@ -154,25 +154,10 @@ public class EstimateUi {
 
         Estimate existingEstimate = estimates.get(index - 1);
 
-        String estimatedAmountStr = scanString("Enter the estimated amount or press Enter to keep it the same: ");
-        double estimatedAmount = existingEstimate.getEstimatedAmount();
-        if (!estimatedAmountStr.isEmpty()) {
-            estimatedAmount = Double.parseDouble(estimatedAmountStr);
-        }
-        LocalDateTime issueDate = scanDate("Enter the issue date (yyyy-MM-dd) or press Enter to keep it the same:", "yyyy-MM-dd");
-        if (issueDate == null) {
-            issueDate = existingEstimate.getIssueDate();
-        }
-
-        LocalDateTime validityDate = scanDate("Enter the validity date (yyyy-MM-dd) or press Enter to keep it the same:", "yyyy-MM-dd");
-        if (validityDate == null) {
-            validityDate = existingEstimate.getValidityDate();
-        }
-
-        Boolean isAccept = scanBoolean("Is this estimate accepted (y/n) or press Enter to keep it the same: ");
-        if (isAccept == null) {
-            isAccept = existingEstimate.getAccept();
-        }
+        Double estimatedAmount = updateDouble("Enter the estimated amount: ", existingEstimate.getEstimatedAmount());
+        LocalDateTime issueDate = updateDate("Enter the issue date (yyyy-MM-dd): ", "yyyy-MM-dd", existingEstimate.getIssueDate());
+        LocalDateTime validityDate = updateDate("Enter the validity date (yyyy-MM-dd)", "yyyy-MM-dd", existingEstimate.getValidityDate());
+        Boolean isAccept = updateBoolean("Is this estimate accepted (y/n) ", existingEstimate.getAccept());
 
         List<Project> projects = projectService.findAll();
         Project projectId = null;
