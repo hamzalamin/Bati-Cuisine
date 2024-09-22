@@ -1,14 +1,12 @@
 package com.wora.presentation;
 
 import com.wora.models.dtos.WorkerDto;
-import com.wora.models.entities.Client;
 import com.wora.models.entities.Project;
 import com.wora.models.entities.Worker;
 import com.wora.models.enums.ComponentType;
 import com.wora.services.IComponentService;
 import com.wora.helpers.Scanners;
 import com.wora.services.IProjectService;
-import com.wora.services.impl.ProjectService;
 
 import java.util.*;
 

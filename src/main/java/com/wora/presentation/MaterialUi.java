@@ -2,8 +2,11 @@ package com.wora.presentation;
 
 import com.wora.models.dtos.MaterialDto;
 import com.wora.models.entities.Material;
+import com.wora.models.entities.Project;
 import com.wora.models.enums.ComponentType;
 import com.wora.services.IComponentService;
+import com.wora.services.IProjectService;
+import com.wora.services.impl.ProjectService;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -15,9 +18,14 @@ import static com.wora.helpers.Scanners.*;
 
 public class MaterialUi {
     private final IComponentService service;
+    private IProjectService projectService;
 
     public MaterialUi(IComponentService service) {
         this.service = service;
+    }
+
+    public void setProjectService(ProjectService projectService){
+        this.projectService = projectService;
     }
 
     public void findAll() {
@@ -69,9 +77,38 @@ public class MaterialUi {
     public void create() {
         Double tva = scanDouble("Material TVA: ");
 
-        ComponentType componentType = ComponentType.valueOf(scanString("Component type"));
+        System.out.println("Select the Component type: ");
+        System.out.println("1 -> WORKER");
+        System.out.println("2 -> MATERIAL");
+        int componentChoice = scanInt("Enter the number for the component type: ");
+        ComponentType componentType;
+        if (componentChoice < 1 || componentChoice > 2) {
+            System.out.println("Invalid choice, defaulting to MATERIAL.");
+            componentType = ComponentType.MATERIAL;
+        } else {
+            componentType = ComponentType.fromNumber(componentChoice);
+        }
 
-        UUID projectId = scanUUID("Project ID: ");
+        System.out.println("Available Projects:");
+        List<Project> projects = projectService.findAll();
+        if (projects.isEmpty()) {
+            System.out.println("No projects found.");
+            return;
+        }
+
+        for (int c = 0; c < projects.size(); c++) {
+            System.out.println((c + 1) + " -> " + projects.get(c).getProjectName() + " (ID: " + projects.get(c).getId() + ")");
+        }
+
+        int index = scanInt("Select a Project for this worker:");
+        UUID projectId = null;
+        if (index < 1 || index > projects.size()) {
+            System.out.println("Invalid choice!!");
+            return;
+        } else {
+            Project selectedProject = projects.get(index - 1);
+            projectId = selectedProject.getId();
+        }
         double quantity = scanDouble("Quantity: ");
         double unitCost = scanDouble("Unit Cost: ");
         double transportCost = scanDouble("transport Cost: ");

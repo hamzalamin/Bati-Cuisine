@@ -51,6 +51,7 @@ public class Main {
         EstimateMenu estimateMenu = new EstimateMenu(estimateUi);
 
         workerUi.setProjectService(projectService);
+        materialUi.setProjectService((ProjectService) projectService);
         MainMenu mainMenu = new MainMenu(clientMenu, projectMenu, workerMenu, materialMenu, estimateMenu);
         clientMenu.setMainMenu(mainMenu);
         projectMenu.setMainMenu(mainMenu);

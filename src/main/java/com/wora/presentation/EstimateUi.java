@@ -225,8 +225,8 @@ public class EstimateUi {
     }
 
     public void findClientEstimate() {
-        UUID estimateId = scanUUID("Enter the Id of estimate: ");
-        List<Estimate> estimates = service.findClientEstimate(estimateId);
+        UUID userId = scanUUID("Enter the Id of User: ");
+        List<Estimate> estimates = service.findClientEstimate(userId);
         if (estimates.isEmpty()) {
             System.out.println("No estimate found");
             return;

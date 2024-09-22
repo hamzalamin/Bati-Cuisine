@@ -13,11 +13,11 @@ public class Scanners {
     private final static Scanner scanner = new Scanner(System.in);
 
     public static int scanInt(String prompt) {
-            System.out.println(prompt);
+        System.out.println(prompt);
         try {
             return Integer.parseInt(scanner.nextLine().trim());
-        } catch (NoSuchElementException e) {
-            System.out.println("Invalid value. Please try again.");
+        } catch (NumberFormatException | NoSuchElementException e) {
+            System.out.println("Invalid value. Please enter a valid integer.");
             return scanInt(prompt);
         }
     }
