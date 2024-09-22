@@ -24,6 +24,7 @@ public class MaterialMapper implements IComponentMapper<Material> {
                         rs.getDouble("profit_margin"),
                         rs.getDouble("total_cost"),
                         ProjectStatus.valueOf(rs.getString("project_status").toUpperCase()),
+                        rs.getDouble("project_id"),
                         new Client(
                                 UUID.fromString(rs.getString("id")),
                                 rs.getString("name"),

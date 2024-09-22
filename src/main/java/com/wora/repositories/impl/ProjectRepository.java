@@ -28,6 +28,7 @@ public class ProjectRepository extends AbstractRepository<Project> implements IP
                         rs.getDouble("profit_margin"),
                         rs.getDouble("total_cost"),
                         ProjectStatus.valueOf(rs.getString("project_status").toUpperCase()),
+                        rs.getDouble("project_tva"),
                         new Client(
                                 UUID.fromString(rs.getString("id")),
                                 rs.getString("name"),
@@ -57,6 +58,7 @@ public class ProjectRepository extends AbstractRepository<Project> implements IP
                         rs.getDouble("profit_margin"),
                         rs.getDouble("total_cost"),
                         ProjectStatus.valueOf(rs.getString("project_status").toUpperCase()),
+                        rs.getDouble("project_tva"),
                         new Client(
                                 UUID.fromString(rs.getString("id")),
                                 rs.getString("name"),
@@ -75,8 +77,8 @@ public class ProjectRepository extends AbstractRepository<Project> implements IP
 
     @Override
     public void create(ProjectDto dto) {
-        final String query = "INSERT INTO " + tableName + "(id, project_name, profit_margin, total_cost, project_status, client_id) " +
-                "VALUES (?::uuid, ?, ?, ?, ?::project_status, ?::uuid)";
+        final String query = "INSERT INTO " + tableName + "(id, project_name, profit_margin, total_cost, project_status, project_tva ,client_id) " +
+                "VALUES (?::uuid, ?, ?, ?, ?::project_status, ?, ?::uuid)";
         try (PreparedStatement stmt = connection.prepareStatement(query)) {
             int c = 1;
             stmt.setObject(c++, UUID.randomUUID());
@@ -84,6 +86,7 @@ public class ProjectRepository extends AbstractRepository<Project> implements IP
             stmt.setDouble(c++, dto.profitMargin());
             stmt.setDouble(c++, dto.totalCost());
             stmt.setObject(c++, dto.projectStatus().toString().toUpperCase());
+            stmt.setDouble(c++, dto.projectTva());
             stmt.setObject(c++, dto.client_id());
             stmt.executeUpdate();
         } catch (SQLException e) {
@@ -100,6 +103,7 @@ public class ProjectRepository extends AbstractRepository<Project> implements IP
                 profit_margin = ?,
                 total_cost = ?,
                 project_status = ?::project_status,
+                project_tva = ?,
                 client_id = ?::uuid
                 WHERE id = ?::uuid
                 """;
@@ -109,6 +113,7 @@ public class ProjectRepository extends AbstractRepository<Project> implements IP
             stmt.setDouble(c++, dto.profitMargin());
             stmt.setDouble(c++, dto.totalCost());
             stmt.setObject(c++, dto.projectStatus().toString().toUpperCase());
+            stmt.setDouble(c++, dto.projectTva());
             stmt.setObject(c++, dto.client_id());
             stmt.setObject(c++, id);
             stmt.executeUpdate();

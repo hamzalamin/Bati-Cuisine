@@ -39,6 +39,7 @@ public class EstimateRepository extends AbstractRepository<Estimate> implements 
                                 rs.getDouble("profit_margin"),
                                 rs.getDouble("total_cost"),
                                 ProjectStatus.valueOf(rs.getString("project_status").toUpperCase()),
+                                rs.getDouble("project_tva"),
                                 new Client(
                                         UUID.fromString(rs.getString("id")),
                                         rs.getString("name"),
@@ -77,6 +78,7 @@ public class EstimateRepository extends AbstractRepository<Estimate> implements 
                                 rs.getDouble("profit_margin"),
                                 rs.getDouble("total_cost"),
                                 ProjectStatus.valueOf(rs.getString("project_status").toUpperCase()),
+                                rs.getDouble("project_tva"),
                                 new Client(
                                         UUID.fromString(rs.getString("id")),
                                         rs.getString("name"),
@@ -119,6 +121,7 @@ public class EstimateRepository extends AbstractRepository<Estimate> implements 
                                 rs.getDouble("profit_margin"),
                                 rs.getDouble("total_cost"),
                                 ProjectStatus.valueOf(rs.getString("project_status").toUpperCase()),
+                                rs.getDouble("project_tva"),
                                 new Client(
                                         UUID.fromString(rs.getString("id")),
                                         rs.getString("name"),

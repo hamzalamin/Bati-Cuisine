@@ -1,18 +1,12 @@
 package com.wora.presentation;
 
-import com.wora.helpers.Scanners;
 import com.wora.models.dtos.ProjectDto;
 import com.wora.models.entities.Client;
 import com.wora.models.entities.Project;
-import com.wora.models.enums.ComponentType;
 import com.wora.models.enums.ProjectStatus;
-import com.wora.services.CalculatorService;
 import com.wora.services.ICalculatorService;
 import com.wora.services.IClientService;
 import com.wora.services.IProjectService;
-import com.wora.services.impl.ClientService;
-
-import java.sql.SQLException;
 import java.util.*;
 
 import static com.wora.helpers.Scanners.*;
@@ -41,6 +35,7 @@ public class ProjectUi {
                     " -- Profit margin: " + projects.get(p).getProfitMargin() +
                     " -- total cost: " + projects.get(p).getTotalCost() + ")" +
                     " -- Project Status: " + projects.get(p).getProjectStatus() + ")" +
+                    " -- Project TVA: " + projects.get(p).getProjectTva() + ")" +
                     " -- Client: " + projects.get(p).getClientId() + ")"
             );
         }
@@ -55,7 +50,8 @@ public class ProjectUi {
                     + " , Profit Margin: " + project1.getProfitMargin()
                     + " , Total Cost: " + project1.getTotalCost()
                     + " , Project Status: " + project1.getProjectStatus()
-                    + " , Client ID: " + project1.getClientId().getId());
+                    + " , Project TVA: " + project1.getProjectTva()
+                    + " , Client ID: " + project1.getClientId().getId() + " => ( Client Name: " + project1.getClientId().getName() + ")");
 
             Double total = calculatingService.calculateTotalForProject(project1);
             Double totalWithTva = calculatingService.calculateTotalWithTvaForProject(project1);
@@ -86,6 +82,9 @@ public class ProjectUi {
         } else {
             projectStatus = ProjectStatus.fromNumber(statusChoice);
         }
+
+        double projectTva = scanDouble("enter the TVA of project: ");
+
         System.out.println("Available Clients:");
         List<Client> clients = clientService.findAll();
         if (clients.isEmpty()) {
@@ -103,7 +102,7 @@ public class ProjectUi {
                 clientId = selectedClient.getId();
             }
 
-            ProjectDto dto = new ProjectDto(name, profitMargin, totalCost, projectStatus, clientId);
+            ProjectDto dto = new ProjectDto(name, profitMargin, totalCost, projectStatus, projectTva ,clientId);
             service.create(dto);
 
             System.out.println("_________________________________________");
@@ -113,6 +112,7 @@ public class ProjectUi {
             System.out.println("Profit Margin: " + profitMargin);
             System.out.println("Total Cost: " + totalCost);
             System.out.println("Project Status: " + projectStatus);
+            System.out.println("Project TVA: " + projectTva);
             System.out.println("Client ID: " + clientId);
             System.out.println("_________________________________________");
         }
@@ -133,7 +133,7 @@ public class ProjectUi {
                     " -- Profit Margin: " + projects.get(p).getProfitMargin() +
                     " -- Total Cost: " + projects.get(p).getTotalCost() +
                     " -- Project Status: " + projects.get(p).getProjectStatus() +
-                    " -- Client ID: " + projects.get(p).getClientId() + ")");
+                    " -- Client Name: " + projects.get(p).getClientId().getName() + ")");
         }
 
         System.out.println("Enter the number of the project you want to update: ");
@@ -174,6 +174,8 @@ public class ProjectUi {
                     projectStatus = existingProject.getProjectStatus();
             }
         }
+        double projectTva = updateDouble("enter the project TVA: " , existingProject.getProjectTva());
+
         List<Client> clients = clientService.findAll();
         if (clients.isEmpty()) {
             System.out.println("No clients found.");
@@ -193,7 +195,7 @@ public class ProjectUi {
         } else {
             clientId = existingProject.getClientId().getId();
         }
-        ProjectDto dto = new ProjectDto(name, profitMargin, totalCost, projectStatus, clientId);
+        ProjectDto dto = new ProjectDto(name, profitMargin, totalCost, projectStatus, projectTva, clientId);
         service.update(dto, existingProject.getId());
 
         System.out.println("_________________________________________");
@@ -203,6 +205,7 @@ public class ProjectUi {
         System.out.println("Profit Margin: " + profitMargin);
         System.out.println("Total Cost: " + totalCost);
         System.out.println("Project Status: " + projectStatus);
+        System.out.println("project TVA: " + projectTva);
         System.out.println("Client ID: " + clientId);
         System.out.println("_________________________________________");
 

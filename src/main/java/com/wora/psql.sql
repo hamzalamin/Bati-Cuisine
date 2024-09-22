@@ -15,6 +15,7 @@ CREATE TABLE projects(
     profit_margin FLOAT,
     total_cost FLOAT,
     project_status project_status,
+    project_tva FLOAT,
     client_id uuid REFERENCES clients(id)
 );
 
