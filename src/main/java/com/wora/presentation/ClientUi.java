@@ -44,7 +44,7 @@ public class ClientUi {
         }
     }
 
-    public void create() {
+    public Client create() {
         String name = scanString("Client name:");
         String address = scanString("Client Address:");
         String phone = scanString("Client phone:");
@@ -56,8 +56,7 @@ public class ClientUi {
                 phone,
                 isProfessional
         );
-        service.create(dto);
-
+        Client client = service.create(dto);
         System.out.println("_________________________________________");
         System.out.println("Client Informations");
         System.out.println("_________________________________________");
@@ -70,7 +69,7 @@ public class ClientUi {
             System.out.println(name + " is not a Professional Client");
         }
         System.out.println("_________________________________________");
-
+        return client;
     }
 
 

@@ -10,8 +10,8 @@ public class Worker extends Component {
     private Double workHours;
     private Double workerProductivity;
 
-    public Worker(UUID id, Double tva, ComponentType componentType, Project projectId, Double hourlyRate, Double workHours, Double workerProductivity) {
-        super(id, tva, componentType, projectId);
+    public Worker(UUID id, Double tva, String name, ComponentType componentType, Project projectId, Double hourlyRate, Double workHours, Double workerProductivity) {
+        super(id, tva, name, componentType, projectId);
         this.hourlyRate = hourlyRate;
         this.workHours = workHours;
         this.workerProductivity = workerProductivity;

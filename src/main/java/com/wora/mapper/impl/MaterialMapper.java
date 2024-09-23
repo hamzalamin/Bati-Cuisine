@@ -17,6 +17,7 @@ public class MaterialMapper implements IComponentMapper<Material> {
         return new Material(
                 UUID.fromString(rs.getString("id")),
                 rs.getDouble("tva"),
+                rs.getString("name"),
                 ComponentType.valueOf(rs.getString("component_type")),
                 new Project(
                         UUID.fromString(rs.getString("id")),
@@ -24,7 +25,6 @@ public class MaterialMapper implements IComponentMapper<Material> {
                         rs.getDouble("profit_margin"),
                         rs.getDouble("total_cost"),
                         ProjectStatus.valueOf(rs.getString("project_status").toUpperCase()),
-                        rs.getDouble("project_id"),
                         new Client(
                                 UUID.fromString(rs.getString("id")),
                                 rs.getString("name"),
@@ -45,6 +45,7 @@ public class MaterialMapper implements IComponentMapper<Material> {
         return new Material(
                 UUID.fromString(rs.getString("id")),
                 rs.getDouble("tva"),
+                rs.getString("name"),
                 ComponentType.valueOf(rs.getString("component_type")),
                 new Project(),
                 rs.getDouble("unit_cost"),

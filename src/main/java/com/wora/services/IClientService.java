@@ -10,7 +10,7 @@ import java.util.UUID;
 public interface IClientService {
     List<Client> findAll();
     Client findById(UUID id) ;
-    void create(ClientDto dto);
+    Client create(ClientDto dto);
     void update(ClientDto dto, UUID id);
     void delete(UUID id);
     Client searchByName(String name);

@@ -12,21 +12,21 @@ public class Project {
     private Double profitMargin;
     private Double totalCost;
     private ProjectStatus projectStatus;
-    private Double projectTva;
     private Client clientId;
 
     public Project(){
     }
 
-    public Project(UUID id, String projectName, Double profitMargin, Double totalCost, ProjectStatus projectStatus,Double projectTva, Client clientId) {
+    public Project(UUID id, String projectName, Double profitMargin, Double totalCost, ProjectStatus projectStatus, Client clientId) {
         this.id = id;
         this.projectName = projectName;
         this.profitMargin = profitMargin;
         this.totalCost = totalCost;
         this.projectStatus = projectStatus;
-        this.projectTva = projectTva;
         this.clientId = clientId;
     }
+
+
 
     public UUID getId() {
         return id;
@@ -66,14 +66,6 @@ public class Project {
 
     public void setProjectStatus(ProjectStatus projectStatus) {
         this.projectStatus = projectStatus;
-    }
-
-    public Double getProjectTva() {
-        return projectTva;
-    }
-
-    public void setProjectTva(Double projectTva) {
-        this.projectTva = projectTva;
     }
 
     public Client getClientId() {

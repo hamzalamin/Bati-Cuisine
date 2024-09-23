@@ -20,12 +20,13 @@ public class WorkerRepository extends ComponentRepository<Worker,WorkerDto> impl
 
     @Override
     public void create(WorkerDto dto) {
-        final String query = "INSERT INTO workers (id, tva, component_type, project_id , hourly_rate, worker_productivity, work_hours) " +
-                " VALUES(?::uuid, ?, ?::component_type, ?, ?, ?, ?)";
+        final String query = "INSERT INTO workers (id, tva, name,component_type, project_id , hourly_rate, worker_productivity, work_hours) " +
+                " VALUES(?::uuid, ?, ?, ?::component_type, ?::uuid, ?, ?, ?)";
         try (PreparedStatement stmt = connection.prepareStatement(query)){
             int c = 1;
             stmt.setObject(c++, UUID.randomUUID());
             stmt.setDouble(c++, dto.getTva());
+            stmt.setString(c++, dto.getName());
             stmt.setObject(c++, dto.getComponentType().toString().toUpperCase());
             stmt.setObject(c++, dto.getProjectId());
             stmt.setDouble(c++, dto.getHourlyRate());
@@ -41,7 +42,7 @@ public class WorkerRepository extends ComponentRepository<Worker,WorkerDto> impl
     public void update(WorkerDto dto, UUID id) {
         final String query = """
                 UPDATE workers SET 
-                tva = ?, component_type = ?::component_type , project_id = ?, hourly_rate = ?, worker_productivity = ? , work_hours = ?
+                tva = ?, name = ?,component_type = ?::component_type , project_id = ?, hourly_rate = ?, worker_productivity = ? , work_hours = ?
                 WHERE  id = ?::uuid
                 """;
         try (PreparedStatement stmt = connection.prepareStatement(query)){

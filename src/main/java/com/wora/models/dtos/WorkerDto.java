@@ -12,8 +12,8 @@ public class WorkerDto extends ComponentDto {
     private final Double workHour;
     private final Double workerProductivity;
 
-    public WorkerDto(Double tva, ComponentType componentType, UUID projectId, Double hourlyRate, Double workHour, Double workerProductivity) {
-        super(tva, componentType, projectId);
+    public WorkerDto(Double tva, String name,ComponentType componentType, UUID projectId, Double hourlyRate, Double workHour, Double workerProductivity) {
+        super(tva, name, componentType, projectId);
 //        this.id = id;
         this.hourlyRate = hourlyRate;
         this.workHour = workHour;

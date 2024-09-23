@@ -30,8 +30,8 @@ public class ClientService implements IClientService {
 
 
     @Override
-    public void create(ClientDto dto) {
-        repository.create(dto);
+    public Client create(ClientDto dto) {
+        return repository.create(dto);
     }
 
     @Override

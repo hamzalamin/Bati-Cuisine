@@ -1,5 +1,6 @@
 package com.wora.presentation.menus;
 
+import com.wora.models.entities.Project;
 import com.wora.presentation.MainMenu;
 import com.wora.presentation.MaterialUi;
 
@@ -24,7 +25,7 @@ public class MenuMaterial {
         int choice;
         do {
             System.out.println("************************** MATERIAL OF CLIENT!!*****************************");
-            System.out.println("1-CREATE MATERIAL");
+//            System.out.println("1-CREATE MATERIAL");
             System.out.println("2-UPDATE MATERIAL");
             System.out.println("3-DELETE MATERIAL");
             System.out.println("4-FIND ALL MATERIALS");
@@ -34,7 +35,7 @@ public class MenuMaterial {
             choice = scanInt("Enter your choice:");
 
             switch (choice) {
-                case 1 -> materialUi.create();
+//                case 1 -> materialUi.create();
                 case 2 -> materialUi.update();
                 case 3 -> materialUi.delete();
                 case 4 -> materialUi.findAll();

@@ -89,8 +89,8 @@ public class EstimateUi {
             }
 
             if (estimatedAmount != null) {
-                LocalDateTime issueDate = scanDate("Enter the issue date (yyyy-MM-dd):", "yyyy-MM-dd");
-                LocalDateTime validityDate = scanDate("Enter the validity date (yyyy-MM-dd):", "yyyy-MM-dd");
+                LocalDateTime issueDate = scanDate("Enter the issue date (yyyy-MM-dd):", "yyyy-MM-dd").atStartOfDay();
+                LocalDateTime validityDate = scanDate("Enter the validity date (yyyy-MM-dd):", "yyyy-MM-dd").atStartOfDay();
                 if (validityDate.isAfter(issueDate)) {
 
                 }

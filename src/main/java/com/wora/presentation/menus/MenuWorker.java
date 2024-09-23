@@ -33,7 +33,7 @@ public class MenuWorker {
 
             choice = scanInt("Enter your choice:");
             switch (choice) {
-                case 1 -> workerUi.create();
+//                case 1 -> workerUi.create();
                 case 2 -> workerUi.update();
                 case 3 -> workerUi.delete();
                 case 4 -> workerUi.findAll();

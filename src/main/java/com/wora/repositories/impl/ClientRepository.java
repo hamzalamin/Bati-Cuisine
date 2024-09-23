@@ -64,21 +64,33 @@ public class ClientRepository extends AbstractRepository<Client> implements ICli
 
 
     @Override
-    public void create(ClientDto dto) {
+    public Client create(ClientDto dto) {
         final String query = "INSERT INTO " + tableName + " (id, name, address, phone, is_professional)" +
-                " VALUES (?::uuid, ?, ?, ?, ?)";
-        try (PreparedStatement stmt = connection.prepareStatement(query)){
+                " VALUES (?::uuid, ?, ?, ?, ?) RETURNING *";
+
+        try (PreparedStatement stmt = connection.prepareStatement(query)) {
             int count = 1;
             stmt.setObject(count++, UUID.randomUUID());
             stmt.setString(count++, dto.name());
             stmt.setString(count++, dto.address());
             stmt.setString(count++, dto.phone());
             stmt.setBoolean(count++, dto.isProfessional());
-            stmt.executeUpdate();
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                return new Client(
+                        (UUID) rs.getObject("id"),
+                        rs.getString("name"),
+                        rs.getString("address"),
+                        rs.getString("phone"),
+                        rs.getBoolean("is_professional")
+                );
+            }
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+        return null;
     }
+
 
     @Override
     public void update(ClientDto dto, UUID id) {
@@ -99,24 +111,28 @@ public class ClientRepository extends AbstractRepository<Client> implements ICli
 
     @Override
     public Client searchByName(String name) {
-        final String query = "SELECT * FROM " +tableName+ " WHERE name = ? ";
-        try (PreparedStatement stmt = connection.prepareStatement(query)){
+        final String query = "SELECT * FROM " + tableName + " WHERE name = ? ";
+        try (PreparedStatement stmt = connection.prepareStatement(query)) {
             stmt.setString(1, name);
             ResultSet rs = stmt.executeQuery();
-            if(rs.next()){
+            if (rs.next()) {
                 return new Client(
-                    UUID.fromString(rs.getString("id")),
-                    rs.getString("name"),
-                    rs.getString("address"),
-                    rs.getString("phone"),
-                    rs.getBoolean("is_professional")
+                        UUID.fromString(rs.getString("id")),
+                        rs.getString("name"),
+                        rs.getString("address"),
+                        rs.getString("phone"),
+                        rs.getBoolean("is_professional")
                 );
             } else {
-                throw new RuntimeException("Route not found for the given station IDs.");
+                System.out.println("No client found with name: " + name);
+                return null;
             }
+
         } catch (SQLException e) {
+            System.err.println("Error executing query: " + e.getMessage());
             throw new RuntimeException(e);
         }
     }
+
 
 }

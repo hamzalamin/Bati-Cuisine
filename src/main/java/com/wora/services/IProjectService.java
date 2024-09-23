@@ -11,7 +11,7 @@ import java.util.UUID;
 public interface IProjectService {
     List<Project> findAll();
     Project findById(UUID id);
-    void create(ProjectDto dto);
+    UUID create(ProjectDto dto);
     void update(ProjectDto dto, UUID id);
     void delete(UUID id);
 }

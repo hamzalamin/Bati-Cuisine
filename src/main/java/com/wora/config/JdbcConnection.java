@@ -8,7 +8,7 @@ public class JdbcConnection {
     private static JdbcConnection INSTANCE = null;
     private static Connection CONNECTION = null;
 
-    private final String url = "jdbc:postgresql://localhost:5432/bati_cuisine";
+    private final String url = "jdbc:postgresql://localhost:5432/bati_cuisine2";
     private final String username = "postgres";
     private final String password = "123";
 

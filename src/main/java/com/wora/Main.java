@@ -41,7 +41,7 @@ public class Main {
         IProjectRepository projectRepository = new ProjectRepository();
         IProjectService projectService = new ProjectService(projectRepository);
         ICalculatorService calculatorService = new CalculatorService(materialRepository ,workerRepository);
-        ProjectUi projectUi = new ProjectUi(projectService, clientService, calculatorService);
+        ProjectUi projectUi = new ProjectUi(projectService, clientService, calculatorService, clientUi, materialUi, workerUi);
         ProjectMenu projectMenu = new ProjectMenu(projectUi);
 
 

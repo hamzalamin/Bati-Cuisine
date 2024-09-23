@@ -29,8 +29,8 @@ public class ProjectService implements IProjectService {
     }
 
     @Override
-    public void create(ProjectDto dto) {
-        repository.create(dto);
+    public UUID create(ProjectDto dto) {
+        return repository.create(dto);
     }
 
     @Override

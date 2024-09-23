@@ -11,8 +11,8 @@ public class Material extends Component {
     private Double transportCost;
     private Double qualityCoefficient;
 
-    public Material(UUID id, Double tva, ComponentType componentType, Project projectId, Double unitCost, Double quantity, Double transportCost, Double qualityCoefficient) {
-        super(id, tva, componentType, projectId);
+    public Material(UUID id, Double tva, String name,ComponentType componentType, Project projectId, Double unitCost, Double quantity, Double transportCost, Double qualityCoefficient) {
+        super(id, tva, name, componentType, projectId);
         this.unitCost = unitCost;
         this.quantity = quantity;
         this.transportCost = transportCost;

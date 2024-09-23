@@ -74,49 +74,19 @@ public class MaterialUi {
         }
     }
 
-    public void create() {
-        Double tva = scanDouble("Material TVA: ");
-
-        System.out.println("Select the Component type: ");
-        System.out.println("1 -> WORKER");
-        System.out.println("2 -> MATERIAL");
-        int componentChoice = scanInt("Enter the number for the component type: ");
-        ComponentType componentType;
-        if (componentChoice < 1 || componentChoice > 2) {
-            System.out.println("Invalid choice, defaulting to MATERIAL.");
-            componentType = ComponentType.MATERIAL;
-        } else {
-            componentType = ComponentType.fromNumber(componentChoice);
-        }
-
-        System.out.println("Available Projects:");
-        List<Project> projects = projectService.findAll();
-        if (projects.isEmpty()) {
-            System.out.println("No projects found.");
-            return;
-        }
-
-        for (int c = 0; c < projects.size(); c++) {
-            System.out.println((c + 1) + " -> " + projects.get(c).getProjectName() + " (ID: " + projects.get(c).getId() + ")");
-        }
-
-        int index = scanInt("Select a Project for this worker:");
-        UUID projectId = null;
-        if (index < 1 || index > projects.size()) {
-            System.out.println("Invalid choice!!");
-            return;
-        } else {
-            Project selectedProject = projects.get(index - 1);
-            projectId = selectedProject.getId();
-        }
+    public void create(UUID projectId) {
+        double tva = scanDouble("Material TVA: ");
+        String name = scanString("enter the name: ");
         double quantity = scanDouble("Quantity: ");
         double unitCost = scanDouble("Unit Cost: ");
-        double transportCost = scanDouble("transport Cost: ");
+        double transportCost = scanDouble("Transport Cost: ");
         double qualityCoefficient = scanDouble("Quality Coefficient: ");
+        UUID project = projectId;
         MaterialDto dto = new MaterialDto(
                 tva,
-                componentType,
-                projectId,
+                name,
+                ComponentType.MATERIAL,
+                project,
                 unitCost,
                 transportCost,
                 quantity,
@@ -124,8 +94,9 @@ public class MaterialUi {
         );
         service.create(dto);
 
-        System.out.println("Material created successfully.");
+        System.out.println("Material added successfully to the project.");
     }
+
 
     public void update() {
         List<Material> materials = null;
@@ -149,6 +120,7 @@ public class MaterialUi {
         Material existingMaterial = materials.get(index - 1);
 
         double tva = updateDouble("Enter new TVA : ", existingMaterial.getTva());
+        String name = updateString("Enter the name: ", existingMaterial.getName());
         UUID projectId = updateUUID("Enter new project id ", existingMaterial.getProjectId().getId());
         ComponentType componentType = updateEnum("Enter new Component Type: ", existingMaterial.getComponentType(), ComponentType.class);
         double quantity = updateDouble("Enter new Quantity ", existingMaterial.getQuantity());
@@ -158,6 +130,7 @@ public class MaterialUi {
 
         MaterialDto dto = new MaterialDto(
                 tva,
+                name,
                 componentType,
                 projectId,
                 quantity,

@@ -1,6 +1,5 @@
 package com.wora.helpers;
 
-import java.sql.SQLOutput;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -75,21 +74,24 @@ public class Scanners {
         }
     }
 
-    public static LocalDateTime  scanDate(String prompt, String format) {
+    public static LocalDate scanDate(String prompt, String format) {
         System.out.println(prompt);
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern(format);
         String input = scanner.nextLine().trim();
 
-        while (!isValidDate(input, format) || isPastDate(LocalDateTime .parse(input, formatter))) {
+        while (!isValidDate(input, format) || isPastDate(LocalDate.parse(input, formatter).atStartOfDay())) {
             if (!isValidDate(input, format)) {
                 System.out.println("Invalid date format. Please enter a valid date in the format " + format);
-            } else if (isPastDate(LocalDateTime .parse(input, formatter))) {
+            } else if (isPastDate(LocalDate.parse(input, formatter).atStartOfDay())) {
                 System.out.println("The date cannot be earlier than today. Please enter a future or today’s date.");
             }
             input = scanner.nextLine().trim();
         }
 
-        return LocalDateTime.parse(input, formatter);
+        return LocalDate.parse(input, formatter);
+    }
+    private static boolean isPastDate(LocalDate date) {
+        return date.isBefore(LocalDate.now());
     }
 
     public static <T extends Enum<T>> T scanEnum(String prompt, Class<T> enumType) {
@@ -210,10 +212,10 @@ public class Scanners {
 
 
 
-    private static boolean isValidDate(String input, String format) {
+    private static boolean isValidDate(String date, String format) {
         try {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern(format);
-            LocalDateTime.parse(input, formatter);
+            LocalDate.parse(date, formatter);
             return true;
         } catch (DateTimeParseException e) {
             return false;

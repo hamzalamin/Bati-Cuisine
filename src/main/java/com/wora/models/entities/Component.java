@@ -7,12 +7,14 @@ import java.util.UUID;
 public abstract class Component {
     private UUID id;
     private Double tva;
+    private String name;
     private ComponentType componentType;
     private Project projectId;
 
-    public Component(UUID id, Double tva, ComponentType componentType, Project projectId) {
+    public Component(UUID id, Double tva, String name ,ComponentType componentType, Project projectId) {
         this.id = id;
         this.tva = tva;
+        this.name = name;
         this.componentType = componentType;
         this.projectId = projectId;
     }
@@ -48,6 +50,14 @@ public abstract class Component {
 
     public void setProjectId(Project projectId) {
         this.projectId = projectId;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public abstract Double total();

@@ -16,7 +16,7 @@ public abstract class AbstractRepository<tableName> {
     }
 
     public void delete(UUID id) {
-        final String query = "DELETE FROM " + tableName + " WHERE id = ?::uuid";
+        final String query = "DELETE FROM " + tableName + " WHERE id = ?::uuid ON CASCADE";
 
         try (PreparedStatement stmt = connection.prepareStatement(query)) {
             stmt.setObject(1, id);
