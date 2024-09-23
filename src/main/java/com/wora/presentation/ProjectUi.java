@@ -215,7 +215,7 @@ public class ProjectUi {
 
         String name = updateString("Enter the project ", existingProject.getProjectName());
         double profitMargin = updateDouble("Enter the profit margin ", existingProject.getProfitMargin());
-        double totalCost = updateDouble("Enter the profit margin ", existingProject.getTotalCost());
+        double totalCost = updateDouble("Enter the Total Cost ", existingProject.getTotalCost());
         System.out.println("Select the project status:");
         System.out.println("1 -> IN_PROGRESS");
         System.out.println("2 -> COMPLETED");

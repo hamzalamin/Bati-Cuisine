@@ -29,18 +29,18 @@ public class MainMenu {
             System.out.println("************************** WELCOME BACK !!*****************************");
             System.out.println("1 - Client Management");
             System.out.println("2 - Project Management");
-            System.out.println("3 - Worker Management");
-            System.out.println("4 - Material Management");
-            System.out.println("5 - Estimate Management");
+//            System.out.println("3 - Worker Management");
+//            System.out.println("4 - Material Management");
+            System.out.println("3 - Estimate Management");
             System.out.println("0 - EXIT");
 
             final int choice = scanInt("Enter your choice: ");
             switch (choice) {
                 case 1 -> clientMenu.clientPresentation();
                 case 2 -> projectMenu.projectPresentation();
-                case 3 -> workerMenu.workerPresentation();
-                case 4 -> materialMenu.materialPresentation();
-                case 5 -> estimateMenu.estimatePresentation();
+//                case 3 -> workerMenu.workerPresentation();
+//                case 4 -> materialMenu.materialPresentation();
+                case 3 -> estimateMenu.estimatePresentation();
                 case 0 -> {
                     System.out.println("Exiting...");
                     System.exit(0);

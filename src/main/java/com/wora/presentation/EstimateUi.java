@@ -91,11 +91,16 @@ public class EstimateUi {
             if (estimatedAmount != null) {
                 LocalDateTime issueDate = scanDate("Enter the issue date (yyyy-MM-dd):", "yyyy-MM-dd").atStartOfDay();
                 LocalDateTime validityDate = scanDate("Enter the validity date (yyyy-MM-dd):", "yyyy-MM-dd").atStartOfDay();
-                if (validityDate.isAfter(issueDate)) {
-
+                Double discount = 0.0;
+                if (projectId.getClientId().getProfessional() == true){
+                    discount = scanDouble("this client is professional you can give hem the discount ?");
                 }
+
                 Boolean isAccept = scanBoolean("Is this estimate accepted (y/n): ");
-                EstimateDto dto = new EstimateDto(estimatedAmount, issueDate, validityDate, isAccept, projectId.getId());
+
+                EstimateDto dto = new EstimateDto(estimatedAmount, issueDate, validityDate, isAccept, discount,projectId.getId());
+
+                Double totalWithDiscount = (estimatedAmount - (discount / 100));
                 if (isAccept == true) {
                     service.create(dto);
                     System.out.println("Estimate created successfully!");
@@ -107,6 +112,10 @@ public class EstimateUi {
                     System.out.println("Issue Date: " + issueDate);
                     System.out.println("Validity Date: " + validityDate);
                     System.out.println("is accept: " + isAccept);
+                    if (projectId.getClientId().getProfessional() == true){
+                        System.out.println("The discount: " + discount);
+                        System.out.println("Total with discount: " + totalWithDiscount);
+                    }
                     System.out.println("Project Name: " + projectId.getProjectName());
                     System.out.println("_________________________________________");
                 } else {
@@ -119,6 +128,10 @@ public class EstimateUi {
                     System.out.println("Issue Date: " + issueDate);
                     System.out.println("Validity Date: " + validityDate);
                     System.out.println("is accept: " + isAccept);
+                    if (projectId.getClientId().getProfessional() == true){
+                        System.out.println("The discount: " + discount);
+                        System.out.println("Total with discount: " + totalWithDiscount);
+                    }
                     System.out.println("Project Name: " + projectId.getProjectName());
                     System.out.println("_________________________________________");
                 }
@@ -157,6 +170,10 @@ public class EstimateUi {
         Double estimatedAmount = updateDouble("Enter the estimated amount: ", existingEstimate.getEstimatedAmount());
         LocalDateTime issueDate = updateDate("Enter the issue date (yyyy-MM-dd): ", "yyyy-MM-dd", existingEstimate.getIssueDate());
         LocalDateTime validityDate = updateDate("Enter the validity date (yyyy-MM-dd)", "yyyy-MM-dd", existingEstimate.getValidityDate());
+        Double discount = 0.0;
+        if (existingEstimate.getProjectId().getClientId().getProfessional() == true){
+            discount = scanDouble("this client is professional you can give hem the discount ?");
+        }
         Boolean isAccept = updateBoolean("Is this estimate accepted (y/n) ", existingEstimate.getAccept());
 
         List<Project> projects = projectService.findAll();
@@ -179,8 +196,10 @@ public class EstimateUi {
             }
 
         }
-        EstimateDto dto = new EstimateDto(estimatedAmount, issueDate, validityDate, isAccept, projectId.getId());
+        EstimateDto dto = new EstimateDto(estimatedAmount, issueDate, validityDate, isAccept, discount, projectId.getId());
         service.update(dto, existingEstimate.getId());
+
+        Double totalWithDiscount = (estimatedAmount - (discount / 100));
 
         System.out.println("Estimate updated successfully!");
         System.out.println("_________________________________________");
@@ -190,6 +209,10 @@ public class EstimateUi {
         System.out.println("Issue Date: " + issueDate);
         System.out.println("Validity Date: " + validityDate);
         System.out.println("is accept: " + isAccept);
+        if (projectId.getClientId().getProfessional() == true){
+            System.out.println("The discount: " + discount);
+            System.out.println("Total with discount: " + totalWithDiscount);
+        }
         System.out.println("Project ID: " + projectId.getId());
         System.out.println("_________________________________________");
     }

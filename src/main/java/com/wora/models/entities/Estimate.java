@@ -9,14 +9,16 @@ public class Estimate {
     private LocalDateTime issueDate;
     private LocalDateTime validityDate;
     private Boolean isAccept;
+    private Double discount;
     private Project projectId;
 
-    public Estimate(UUID id, Double estimatedAmount, LocalDateTime issueDate, LocalDateTime validityDate, Boolean isAccept, Project projectId) {
+    public Estimate(UUID id, Double estimatedAmount, LocalDateTime issueDate, LocalDateTime validityDate, Boolean isAccept, Double discount, Project projectId) {
         this.id = id;
         this.estimatedAmount = estimatedAmount;
         this.issueDate = issueDate;
         this.validityDate = validityDate;
         this.isAccept = isAccept;
+        this.discount = discount;
         this.projectId = projectId;
     }
 
@@ -58,6 +60,14 @@ public class Estimate {
 
     public void setAccept(Boolean accept) {
         isAccept = accept;
+    }
+
+    public Double getDiscount() {
+        return discount;
+    }
+
+    public void setDiscount(Double discount) {
+        this.discount = discount;
     }
 
     public Project getProjectId() {

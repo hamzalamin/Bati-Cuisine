@@ -24,6 +24,7 @@ CREATE TABLE estimates (
     issue_date DATE,
     validity_date DATE,
     is_accepted BOOLEAN,
+    discount FLOAT null,
     project_id UUID REFERENCES projects(id) ON DELETE CASCADE
 );
 

@@ -93,7 +93,7 @@ public class WorkerUi {
     }
 
 
-    public void update() {
+    public void update(UUID projectId) {
         List<Worker> workers = service.findAll();
         if (workers.isEmpty()) {
             System.out.println("No workers found.");
@@ -116,7 +116,7 @@ public class WorkerUi {
         double tva = updateDouble("Enter new TVA : ", existingWorker.getTva());
         String name = updateString("enter new name : ", existingWorker.getName());
         ComponentType componentType = updateEnum("Enter new Component Type: ", existingWorker.getComponentType(), ComponentType.class);
-        UUID projectId = updateUUID("Enter new Project ID : ", existingWorker.getProjectId().getId());
+//        UUID projectId = updateUUID("Enter new Project ID : ", existingWorker.getProjectId().getId());
         double hourlyRate = updateDouble("Enter new Hourly Rate : ", existingWorker.getHourlyRate());
         double productivity = updateDouble("Enter new Productivity : ", existingWorker.getWorkerProductivity());
         double workHour = updateDouble("Enter new Work Hours  (HH.mm): ", existingWorker.getWorkHours());

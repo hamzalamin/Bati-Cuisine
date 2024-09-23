@@ -25,7 +25,7 @@ public class MenuMaterial {
         int choice;
         do {
             System.out.println("************************** MATERIAL OF CLIENT!!*****************************");
-//            System.out.println("1-CREATE MATERIAL");
+            System.out.println("1-CREATE MATERIAL");
             System.out.println("2-UPDATE MATERIAL");
             System.out.println("3-DELETE MATERIAL");
             System.out.println("4-FIND ALL MATERIALS");
@@ -36,11 +36,10 @@ public class MenuMaterial {
 
             switch (choice) {
 //                case 1 -> materialUi.create();
-                case 2 -> materialUi.update();
-                case 3 -> materialUi.delete();
-                case 4 -> materialUi.findAll();
-                case 5 -> materialUi.findById();
-
+//                case 2 -> materialUi.update();
+//                case 3 -> materialUi.delete();
+//                case 4 -> materialUi.findAll();
+//                case 5 -> materialUi.findById();
                 case 0 -> mainMenu.showMenu();
                 default -> System.out.println("Invalid choice. Please try again.");
             }

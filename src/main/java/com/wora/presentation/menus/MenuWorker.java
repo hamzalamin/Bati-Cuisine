@@ -34,10 +34,10 @@ public class MenuWorker {
             choice = scanInt("Enter your choice:");
             switch (choice) {
 //                case 1 -> workerUi.create();
-                case 2 -> workerUi.update();
-                case 3 -> workerUi.delete();
-                case 4 -> workerUi.findAll();
-                case 5 -> workerUi.findById();
+//                case 2 -> workerUi.update();
+//                case 3 -> workerUi.delete();
+//                case 4 -> workerUi.findAll();
+//                case 5 -> workerUi.findById();
                 case 0 -> {
                     mainMenu.showMenu();
                     return;

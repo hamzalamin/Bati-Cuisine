@@ -33,6 +33,7 @@ public class EstimateRepository extends AbstractRepository<Estimate> implements 
                         rs.getTimestamp("issue_date").toLocalDateTime(),
                         rs.getTimestamp("validity_date").toLocalDateTime(),
                         rs.getBoolean("is_accepted"),
+                        rs.getDouble("discount"),
                         new Project (
                                 UUID.fromString(rs.getString("id")),
                                 rs.getString("project_name"),
@@ -71,6 +72,7 @@ public class EstimateRepository extends AbstractRepository<Estimate> implements 
                         rs.getTimestamp("issue_date").toLocalDateTime(),
                         rs.getTimestamp("validity_date").toLocalDateTime(),
                         rs.getBoolean("is_accepted"),
+                        rs.getDouble("discount"),
                         new Project (
                                 UUID.fromString(rs.getString("id")),
                                 rs.getString("project_name"),
@@ -113,6 +115,7 @@ public class EstimateRepository extends AbstractRepository<Estimate> implements 
                         rs.getTimestamp("issue_date").toLocalDateTime(),
                         rs.getTimestamp("validity_date").toLocalDateTime(),
                         rs.getBoolean("is_accepted"),
+                        rs.getDouble("discount"),
                         new Project(
                                 UUID.fromString(rs.getString("id")),
                                 rs.getString("project_name"),
@@ -140,7 +143,7 @@ public class EstimateRepository extends AbstractRepository<Estimate> implements 
 
     @Override
     public void create(EstimateDto dto) {
-        final String query = "INSERT INTO " + tableName + " (id, estimated_amount, issue_date, validity_date, is_accepted, project_id) VALUES(?::uuid, ?, ?, ?, ?, ?::uuid)";
+        final String query = "INSERT INTO " + tableName + " (id, estimated_amount, issue_date, validity_date, is_accepted, discount, project_id) VALUES(?::uuid, ?, ?, ?, ?, ?, ?::uuid)";
         try (PreparedStatement stmt = connection.prepareStatement(query)){
             int c = 1;
             stmt.setObject(c++, UUID.randomUUID());
@@ -148,6 +151,7 @@ public class EstimateRepository extends AbstractRepository<Estimate> implements 
             stmt.setTimestamp(c++, Timestamp.valueOf(dto.issueDate()));
             stmt.setTimestamp(c++, Timestamp.valueOf(dto.validityDate()));
             stmt.setBoolean(c++, dto.isAccept());
+            stmt.setDouble(c++, dto.discount());
             stmt.setObject(c++,  dto.projectId());
             stmt.executeUpdate();
         } catch (SQLException e) {
@@ -159,7 +163,7 @@ public class EstimateRepository extends AbstractRepository<Estimate> implements 
     public void update(EstimateDto dto, UUID id) {
         final String query = "UPDATE INTO " + tableName +
                 "SET estimated_amount = ?, " +
-                "issue_date = ?, validity_date = ?, is_accepted = ? ,project_id = ?::uuid " +
+                "issue_date = ?, validity_date = ?, is_accepted = ?, discount = ? ,project_id = ?::uuid " +
                 "WHERE id = ?::uuid";
         try (PreparedStatement stmt = connection.prepareStatement(query)){
             int c = 1;
@@ -167,6 +171,7 @@ public class EstimateRepository extends AbstractRepository<Estimate> implements 
             stmt.setTimestamp(c++, Timestamp.valueOf(dto.issueDate()));
             stmt.setTimestamp(c++, Timestamp.valueOf(dto.validityDate()));
             stmt.setBoolean(c++, dto.isAccept());
+            stmt.setDouble(c++, dto.discount());
             stmt.setObject(c++, dto.projectId());
             stmt.setObject(c++, id);
             stmt.executeUpdate();
