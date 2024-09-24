@@ -10,7 +10,6 @@ public record EstimateDto(
     LocalDateTime issueDate,
     LocalDateTime validityDate,
     Boolean isAccept,
-    Double discount,
     UUID projectId
 ) {
 }

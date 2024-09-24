@@ -10,7 +10,8 @@ public record ProjectDto(
         Double profitMargin,
         Double totalCost,
         ProjectStatus projectStatus,
-        UUID client_id
+        UUID client_id,
+        Double discount
 ) {
 
 }

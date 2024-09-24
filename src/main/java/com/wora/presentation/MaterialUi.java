@@ -75,8 +75,8 @@ public class MaterialUi {
     }
 
     public void create(UUID projectId) {
-        double tva = scanDouble("Material TVA: ");
         String name = scanString("enter the name: ");
+        double tva = scanDouble("Material TVA: ");
         double quantity = scanDouble("Quantity: ");
         double unitCost = scanDouble("Unit Cost: ");
         double transportCost = scanDouble("Transport Cost: ");
@@ -119,8 +119,8 @@ public class MaterialUi {
 
         Material existingMaterial = materials.get(index - 1);
 
-        double tva = updateDouble("Enter new TVA : ", existingMaterial.getTva());
         String name = updateString("Enter the name: ", existingMaterial.getName());
+        double tva = updateDouble("Enter new TVA : ", existingMaterial.getTva());
         UUID projectId = updateUUID("Enter new project id ", existingMaterial.getProjectId().getId());
         ComponentType componentType = updateEnum("Enter new Component Type: ", existingMaterial.getComponentType(), ComponentType.class);
         double quantity = updateDouble("Enter new Quantity ", existingMaterial.getQuantity());

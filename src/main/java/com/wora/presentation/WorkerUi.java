@@ -73,8 +73,8 @@ public class WorkerUi {
     }
 
     public void create(UUID projectId) {
-        double tva = scanDouble("Worker TVA: ");
         String name = scanString("Enter the name: ");
+        double tva = scanDouble("Worker TVA: ");
         double hourlyRate = scanDouble("Hourly Rate: ");
         double productivity = scanDouble("Productivity: ");
         double workHour = scanDouble("Work Hours (format: HH.mm): ");
@@ -113,8 +113,8 @@ public class WorkerUi {
 
         Worker existingWorker = workers.get(index - 1);
 
-        double tva = updateDouble("Enter new TVA : ", existingWorker.getTva());
         String name = updateString("enter new name : ", existingWorker.getName());
+        double tva = updateDouble("Enter new TVA : ", existingWorker.getTva());
         ComponentType componentType = updateEnum("Enter new Component Type: ", existingWorker.getComponentType(), ComponentType.class);
 //        UUID projectId = updateUUID("Enter new Project ID : ", existingWorker.getProjectId().getId());
         double hourlyRate = updateDouble("Enter new Hourly Rate : ", existingWorker.getHourlyRate());

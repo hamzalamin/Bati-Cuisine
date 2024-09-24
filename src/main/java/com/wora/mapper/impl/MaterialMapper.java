@@ -31,7 +31,8 @@ public class MaterialMapper implements IComponentMapper<Material> {
                                 rs.getString("address"),
                                 rs.getString("phone"),
                                 rs.getBoolean("is_professional")
-                        )
+                        ),
+                        rs.getDouble("discount")
                 ),
                 rs.getDouble("unit_cost"),
                 rs.getDouble("quantity"),

@@ -1,6 +1,5 @@
 package com.wora.repositories.impl;
 
-import com.wora.config.JdbcConnection;
 import com.wora.models.dtos.ProjectDto;
 import com.wora.models.entities.Client;
 import com.wora.models.entities.Project;
@@ -22,6 +21,10 @@ public class ProjectRepository extends AbstractRepository<Project> implements IP
         try (Statement stmt = connection.createStatement()) {
             final ResultSet rs = stmt.executeQuery(query);
             while (rs.next()) {
+//                ResultSetMetaData metaData = rs.getMetaData();
+//                for (int i = 0; i < metaData.getColumnCount(); i++) {
+//                    System.out.println(i +" -> " + metaData.getColumnName(i));
+//                }
                 Project project = new Project(
                         UUID.fromString(rs.getString("id")),
                         rs.getString("project_name"),
@@ -29,12 +32,13 @@ public class ProjectRepository extends AbstractRepository<Project> implements IP
                         rs.getDouble("total_cost"),
                         ProjectStatus.valueOf(rs.getString("project_status").toUpperCase()),
                         new Client(
-                                UUID.fromString(rs.getString("id")),
+                                UUID.fromString(rs.getString("client_id")),
                                 rs.getString("name"),
                                 rs.getString("address"),
                                 rs.getString("phone"),
                                 rs.getBoolean("is_professional")
-                        )
+                        ),
+                        rs.getDouble("discount")
                 );
                 projects.add(project);
             }
@@ -63,7 +67,8 @@ public class ProjectRepository extends AbstractRepository<Project> implements IP
                                 rs.getString("address"),
                                 rs.getString("phone"),
                                 rs.getBoolean("is_professional")
-                        )
+                        ),
+                        rs.getDouble("discount")
                 );
                 return Optional.ofNullable(project);
             }
@@ -75,8 +80,8 @@ public class ProjectRepository extends AbstractRepository<Project> implements IP
 
     @Override
     public UUID create(ProjectDto dto) {
-        final String query = "INSERT INTO " + tableName + "(id, project_name, profit_margin, total_cost, project_status, client_id) " +
-                "VALUES (?::uuid, ?, ?, ?, ?::project_status, ?::uuid)";
+        final String query = "INSERT INTO " + tableName + "(id, project_name, profit_margin, total_cost, project_status, client_id, discount) " +
+                "VALUES (?::uuid, ?, ?, ?, ?::project_status, ?::uuid, ?)";
         try (PreparedStatement stmt = connection.prepareStatement(query)) {
             int c = 1;
             UUID projectId = UUID.randomUUID();
@@ -87,6 +92,7 @@ public class ProjectRepository extends AbstractRepository<Project> implements IP
             stmt.setDouble(c++, dto.totalCost());
             stmt.setObject(c++, dto.projectStatus().toString().toUpperCase());
             stmt.setObject(c++, dto.client_id());
+            stmt.setDouble(c++, dto.discount());
             stmt.executeUpdate();
             return projectId;
         } catch (SQLException e) {
@@ -104,8 +110,9 @@ public class ProjectRepository extends AbstractRepository<Project> implements IP
                 profit_margin = ?,
                 total_cost = ?,
                 project_status = ?::project_status,
-                client_id = ?::uuid
-                WHERE id = ?::uuid
+                client_id = ?,
+                discount = ?
+                WHERE id = ?
                 """;
         try (PreparedStatement stmt = connection.prepareStatement(query)) {
             int c = 1;
@@ -114,13 +121,12 @@ public class ProjectRepository extends AbstractRepository<Project> implements IP
             stmt.setDouble(c++, dto.totalCost());
             stmt.setObject(c++, dto.projectStatus().toString().toUpperCase());
             stmt.setObject(c++, dto.client_id());
+            stmt.setDouble(c++, dto.discount());
             stmt.setObject(c++, id);
             stmt.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
-
-
 
 }

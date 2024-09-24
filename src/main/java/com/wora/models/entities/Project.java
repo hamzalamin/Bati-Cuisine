@@ -13,17 +13,19 @@ public class Project {
     private Double totalCost;
     private ProjectStatus projectStatus;
     private Client clientId;
+    private Double discount;
 
     public Project(){
     }
 
-    public Project(UUID id, String projectName, Double profitMargin, Double totalCost, ProjectStatus projectStatus, Client clientId) {
+    public Project(UUID id, String projectName, Double profitMargin, Double totalCost, ProjectStatus projectStatus, Client clientId, Double discount) {
         this.id = id;
         this.projectName = projectName;
         this.profitMargin = profitMargin;
         this.totalCost = totalCost;
         this.projectStatus = projectStatus;
         this.clientId = clientId;
+        this.discount = discount;
     }
 
 
@@ -76,4 +78,11 @@ public class Project {
         this.clientId = clientId;
     }
 
+    public Double getDiscount() {
+        return discount;
+    }
+
+    public void setDiscount(Double discount) {
+        this.discount = discount;
+    }
 }

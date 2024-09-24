@@ -15,6 +15,7 @@ CREATE TABLE projects (
     profit_margin FLOAT,
     total_cost FLOAT,
     project_status project_status,
+    discount FLOAT null,
     client_id UUID REFERENCES clients(id) ON DELETE CASCADE
 );
 
@@ -24,7 +25,6 @@ CREATE TABLE estimates (
     issue_date DATE,
     validity_date DATE,
     is_accepted BOOLEAN,
-    discount FLOAT null,
     project_id UUID REFERENCES projects(id) ON DELETE CASCADE
 );
 

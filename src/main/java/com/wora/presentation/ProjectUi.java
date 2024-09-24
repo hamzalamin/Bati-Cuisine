@@ -60,9 +60,12 @@ public class ProjectUi {
 
             Double total = calculatingService.calculateTotalForProject(project1);
             Double totalWithTva = calculatingService.calculateTotalWithTvaForProject(project1);
+            Double totalWithDiscount = totalWithTva - (totalWithTva * project1.getDiscount()/100);
 
             System.out.println("Total Cost of Components: " + total);
             System.out.println("Total Cost of Components with TVA: " + totalWithTva);
+            System.out.println("Total Cost of Components with TVA & Discount: " + totalWithDiscount);
+
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -112,7 +115,14 @@ public class ProjectUi {
             projectStatus = ProjectStatus.fromNumber(statusChoice);
         }
 
-        ProjectDto dto = new ProjectDto(projectName, profitMargin, totalCost, projectStatus, client.getId());
+        Double discount = 0.0;
+        if (client.getProfessional() == true){
+            discount = scanDouble("this client is professional you can give hem the discount ?");
+        }
+
+        Double totalCostWithDiscount = totalCost - (totalCost * (discount / 100));
+
+        ProjectDto dto = new ProjectDto(projectName, profitMargin, totalCost, projectStatus, client.getId(), discount);
         UUID projectId = service.create(dto);
 
         System.out.println(projectId);
@@ -122,6 +132,10 @@ public class ProjectUi {
         System.out.println("Project Name: " + projectName);
         System.out.println("Profit Margin: " + profitMargin);
         System.out.println("Total Cost: " + totalCost);
+        if (client.getProfessional() == true){
+            System.out.println("discount : " + discount);
+            System.out.println("Total Cost with discount :" + totalCostWithDiscount);
+        }
         System.out.println("Project Status: " + projectStatus);
         System.out.println("Client ID: " + client.getId());
         System.out.println("Project ID: " + projectId);
@@ -216,6 +230,10 @@ public class ProjectUi {
         String name = updateString("Enter the project ", existingProject.getProjectName());
         double profitMargin = updateDouble("Enter the profit margin ", existingProject.getProfitMargin());
         double totalCost = updateDouble("Enter the Total Cost ", existingProject.getTotalCost());
+        Double discount = 0.0;
+        if (existingProject.getClientId().getProfessional() == true){
+            discount = updateDouble("this client is professional you can give hem the discount ?", existingProject.getDiscount());
+        }
         System.out.println("Select the project status:");
         System.out.println("1 -> IN_PROGRESS");
         System.out.println("2 -> COMPLETED");
@@ -241,26 +259,10 @@ public class ProjectUi {
             }
         }
 
-        List<Client> clients = clientService.findAll();
-        if (clients.isEmpty()) {
-            System.out.println("No clients found.");
-            return;
-        }
+        UUID clientId = existingProject.getClientId().getId();
 
-        for (int c = 0; c < clients.size(); c++) {
-            System.out.println((c + 1) + " -> " + clients.get(c).getName() + " (ID: " + clients.get(c).getId() + ")");
-        }
-
-        int clientIndex = scanInt("Select a client for this project or press Enter to keep the same:");
-        UUID clientId = null;
-
-        if (clientIndex > 0 && clientIndex <= clients.size()) {
-            Client selectedClient = clients.get(clientIndex - 1);
-            clientId = selectedClient.getId();
-        } else {
-            clientId = existingProject.getClientId().getId();
-        }
-        ProjectDto dto = new ProjectDto(name, profitMargin, totalCost, projectStatus, clientId);
+        Double totalCostWithDiscount = totalCost - (totalCost * (discount / 100));
+        ProjectDto dto = new ProjectDto(name, profitMargin, totalCost, projectStatus, clientId, discount);
         service.update(dto, existingProject.getId());
 
         System.out.println("_________________________________________");
@@ -269,6 +271,10 @@ public class ProjectUi {
         System.out.println("Project Name: " + name);
         System.out.println("Profit Margin: " + profitMargin);
         System.out.println("Total Cost: " + totalCost);
+        if (existingProject.getClientId().getProfessional() == true){
+            System.out.println("discount : " + discount);
+            System.out.println("Total Cost with discount :" + totalCostWithDiscount);
+        }
         System.out.println("Project Status: " + projectStatus);
         System.out.println("Client ID: " + clientId);
         System.out.println("_________________________________________");

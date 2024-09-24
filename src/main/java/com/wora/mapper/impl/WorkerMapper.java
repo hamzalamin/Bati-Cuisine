@@ -31,7 +31,8 @@ public class WorkerMapper implements IComponentMapper<Worker> {
                                 rs.getString("address"),
                                 rs.getString("phone"),
                                 rs.getBoolean("is_professional")
-                        )
+                        ),
+                        rs.getDouble("discount")
                 ),
                 rs.getDouble("hourly_rate"),
                 rs.getDouble("work_Hours"),
