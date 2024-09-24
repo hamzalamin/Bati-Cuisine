@@ -46,6 +46,6 @@ public class CalculatorService implements ICalculatorService {
     public Double calculateTotalWithTvaForProject(Project project) {
         return getComponentsForProject(project).stream()
                 .mapToDouble(Component::totalWithTva)
-                .reduce(0.0, Double::sum);
+                .reduce(0.0, (a, b) -> a+b);
     }
 }
